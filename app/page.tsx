@@ -27,7 +27,7 @@ export default function HomePage() {
             <div className="flex size-12 items-center justify-center rounded-xl bg-card text-patient-border shadow-sm">
               <User className="size-6" aria-hidden="true" />
             </div>
-            <h2 className="mt-5 text-xl font-semibold text-foreground">
+            <h2 className="mt-5 text-xl font-semibold text-patient-border">
               Paciente
             </h2>
             <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
@@ -49,7 +49,7 @@ export default function HomePage() {
             <div className="flex size-12 items-center justify-center rounded-xl bg-card text-professional-border shadow-sm">
               <Stethoscope className="size-6" aria-hidden="true" />
             </div>
-            <h2 className="mt-5 text-xl font-semibold text-foreground">
+            <h2 className="mt-5 text-xl font-semibold text-professional-border">
               Profissional
             </h2>
             <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
