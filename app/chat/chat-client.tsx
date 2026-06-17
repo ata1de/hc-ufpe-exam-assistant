@@ -11,6 +11,7 @@ import {
   Info,
   FileText,
 } from "lucide-react"
+import ReactMarkdown from "react-markdown"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import type { ChatMessage, Profile, Source } from "@/lib/types"
@@ -18,12 +19,20 @@ import { cn } from "@/lib/utils"
 
 type DisplayMessage = ChatMessage & { sources?: Source[] }
 
-const SUGGESTIONS = [
-  "Preciso de jejum para ressonância com contraste?",
-  "Como me preparo para tomografia do tórax?",
-  "Quais documentos levo no dia do exame?",
-  "Preciso de acompanhante na mamografia?",
-]
+const SUGGESTIONS: Record<Profile, string[]> = {
+  patient: [
+    "Preciso de jejum para ressonância com contraste?",
+    "Como me preparo para tomografia do tórax?",
+    "Quais documentos levo no dia do exame?",
+    "Preciso de acompanhante na mamografia?",
+  ],
+  professional: [
+    "Qual o protocolo de preparo para TC de abdome com contraste?",
+    "Quais as contraindicações para uso de contraste iodado?",
+    "Como solicitar exame via AGHU para paciente internado?",
+    "Quais exames exigem APAC para autorização?",
+  ],
+}
 
 const PROFILE_META: Record<
   Profile,
@@ -181,11 +190,12 @@ export function ChatClient() {
                 Olá! Como posso ajudar?
               </h2>
               <p className="mt-1 text-sm text-muted-foreground max-w-sm leading-relaxed">
-                Pergunte sobre jejum, contraste, documentos ou onde marcar seu
-                exame. Você pode começar com uma das sugestões abaixo.
+                {profile === "professional"
+                  ? "Consulte protocolos, contraindicações, fluxo de agendamento e preparos específicos. Comece com uma das sugestões abaixo."
+                  : "Pergunte sobre jejum, contraste, documentos ou onde marcar seu exame. Você pode começar com uma das sugestões abaixo."}
               </p>
               <div className="mt-6 grid w-full gap-2 sm:grid-cols-2">
-                {SUGGESTIONS.map((s) => (
+                {SUGGESTIONS[profile].map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -281,70 +291,58 @@ function MessageBubble({ message }: { message: DisplayMessage }) {
   )
 }
 
-function renderInline(text: string) {
-  // Suporta **negrito** e _itálico_ de forma simples.
-  const parts = text.split(/(\*\*[^*]+\*\*|_[^_]+_)/g)
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return (
-        <strong key={i} className="font-semibold">
-          {part.slice(2, -2)}
-        </strong>
-      )
-    }
-    if (part.startsWith("_") && part.endsWith("_") && part.length > 2) {
-      return (
-        <em key={i} className="opacity-80">
-          {part.slice(1, -1)}
-        </em>
-      )
-    }
-    return <span key={i}>{part}</span>
-  })
-}
-
 function FormattedContent({ text, isUser }: { text: string; isUser: boolean }) {
-  const lines = text.split("\n")
-
   return (
-    <div className="flex flex-col gap-1">
-      {lines.map((line, i) => {
-        const trimmed = line.trim()
-
-        if (trimmed === "---") {
-          return (
-            <hr
-              key={i}
-              className={cn(
-                "my-2 border-t",
-                isUser ? "border-primary-foreground/30" : "border-border",
-              )}
-            />
-          )
-        }
-
-        if (trimmed === "") {
-          return <div key={i} className="h-1.5" aria-hidden="true" />
-        }
-
-        if (trimmed.startsWith("- ")) {
-          return (
-            <div key={i} className="flex gap-2 pl-1">
-              <span
-                className={cn(
-                  "mt-1.5 size-1.5 shrink-0 rounded-full",
-                  isUser ? "bg-primary-foreground/60" : "bg-primary/60",
-                )}
-                aria-hidden="true"
-              />
-              <span>{renderInline(trimmed.slice(2))}</span>
-            </div>
-          )
-        }
-
-        return <p key={i}>{renderInline(trimmed)}</p>
-      })}
-    </div>
+    <ReactMarkdown
+      components={{
+        p: ({ children }) => (
+          <p className="mb-1 last:mb-0 leading-relaxed">{children}</p>
+        ),
+        strong: ({ children }) => (
+          <strong className="font-semibold">{children}</strong>
+        ),
+        em: ({ children }) => (
+          <em className="opacity-80">{children}</em>
+        ),
+        ul: ({ children }) => (
+          <ul className="my-1.5 flex flex-col gap-0.5 pl-4 list-disc marker:opacity-60">
+            {children}
+          </ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="my-1.5 flex flex-col gap-0.5 pl-5 list-decimal marker:opacity-60">
+            {children}
+          </ol>
+        ),
+        li: ({ children }) => (
+          <li className="leading-relaxed pl-0.5">{children}</li>
+        ),
+        h1: ({ children }) => (
+          <h1 className="text-base font-bold mb-1 mt-2">{children}</h1>
+        ),
+        h2: ({ children }) => (
+          <h2 className="text-sm font-bold mb-1 mt-2">{children}</h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="text-sm font-semibold mb-1 mt-2">{children}</h3>
+        ),
+        hr: () => (
+          <hr
+            className={cn(
+              "my-2 border-t",
+              isUser ? "border-primary-foreground/30" : "border-border",
+            )}
+          />
+        ),
+        code: ({ children }) => (
+          <code className="rounded bg-black/10 px-1 py-0.5 text-xs font-mono">
+            {children}
+          </code>
+        ),
+      }}
+    >
+      {text}
+    </ReactMarkdown>
   )
 }
 

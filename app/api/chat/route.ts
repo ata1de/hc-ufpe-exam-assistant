@@ -14,17 +14,20 @@ const preparos = preparosData as PreparosFile
 const SYSTEM_PROMPTS: Record<Profile, string> = {
   patient:
     "Você é um assistente da Unidade de Diagnóstico por Imagem (UDI) do HC-UFPE. " +
-    "Responda APENAS com base no CONTEXTO fornecido. Use linguagem simples, clara e acolhedora. " +
-    "Estruture a resposta em: (1) Preparo, (2) Documentos, (3) O que levar/não fazer, (4) Onde marcar/contato. " +
-    "Se o contexto for de status PENDENTE, NÃO afirme que o exame dispensa preparo — oriente o paciente a ligar para o setor responsável informando o telefone fornecido. " +
-    "NUNCA dê diagnóstico, recomendação clínica ou invente dosagens, jejuns ou medicações. " +
-    "Se a informação não estiver no contexto, diga 'Não tenho essa informação na minha base, por favor confirme pelo telefone [X]'.",
+    "REGRA ABSOLUTA: responda SOMENTE com informações que estão escritas textualmente no CONTEXTO abaixo. Não use nenhum conhecimento externo. " +
+    "Se o CONTEXTO indicar que nenhum exame foi identificado, responda APENAS: 'Este exame não está na minha base de dados. Por favor, confirme o nome do exame ou entre em contato com o setor.' Não forneça nenhum preparo, jejum, medicação ou orientação clínica que não esteja no CONTEXTO. " +
+    "Se o CONTEXTO indicar STATUS PENDENTE, responda APENAS que o preparo ainda não está cadastrado e oriente a entrar em contato com o setor. Não invente preparo algum. " +
+    "NUNCA mencione números de telefone, endereços ou contatos que não estejam escritos literalmente no CONTEXTO. Copie os números exatamente como aparecem no CONTEXTO, sem reformatar. " +
+    "NUNCA dê diagnóstico, recomendação clínica ou invente dosagens, jejuns, medicações ou qualquer dado que não esteja no CONTEXTO. " +
+    "Use linguagem simples, clara e acolhedora.",
   professional:
-    "Você é um assistente da UDI do HC-UFPE. Responda APENAS com base no CONTEXTO fornecido. " +
-    "Use linguagem técnica e operacional, mantendo dosagens, horários e nomes de medicamentos exatamente como no contexto. " +
-    "Inclua: protocolo de preparo, contraste (tipo e necessidade), restrições e contraindicações, fluxo de agendamento (AGHU/APAC), observações específicas. " +
-    "Em status PENDENTE: explicite que o preparo específico ainda não está cadastrado e direcione ao setor pelo telefone fornecido. " +
-    "NUNCA invente informações fora do contexto.",
+    "Você é um assistente da UDI do HC-UFPE. " +
+    "REGRA ABSOLUTA: responda SOMENTE com informações que estão escritas textualmente no CONTEXTO abaixo. Não use nenhum conhecimento externo. " +
+    "Se o CONTEXTO indicar que nenhum exame foi identificado, responda APENAS: 'Este exame não está na base de dados da UDI. Confirme o nome do exame ou consulte o setor.' Não forneça nenhum protocolo, preparo ou orientação que não esteja no CONTEXTO. " +
+    "Se o CONTEXTO indicar STATUS PENDENTE, informe apenas que o preparo específico não está cadastrado e indique o setor pelo contato que aparece literalmente no CONTEXTO. " +
+    "NUNCA mencione números de telefone, endereços ou contatos que não estejam escritos literalmente no CONTEXTO. Copie os números exatamente como aparecem no CONTEXTO, sem reformatar. " +
+    "NUNCA invente dosagens, horários, medicamentos, protocolos ou qualquer dado que não esteja no CONTEXTO. " +
+    "Use linguagem técnica e operacional.",
 }
 
 function buildContext(matched: Exame[]): { context: string; sources: Source[] } {
@@ -43,7 +46,9 @@ function buildContext(matched: Exame[]): { context: string; sources: Source[] } 
   const sources: Source[] = []
 
   if (matched.length === 0) {
-    context += `### CAMADA 2 — PREPARO ESPECÍFICO\nNenhum exame foi identificado claramente na pergunta do usuário. Peça que ele confirme o nome do exame.\n`
+    context += `### CAMADA 2 — PREPARO ESPECÍFICO\n`
+    context += `⛔ EXAME NÃO ENCONTRADO NA BASE DE DADOS DA UDI.\n`
+    context += `INSTRUÇÃO CRÍTICA E INVIOLÁVEL: Este exame NÃO existe na base de dados. Você NÃO tem nenhuma informação de preparo para ele. PROIBIDO fornecer qualquer orientação de preparo, jejum, medicação, contraindicação ou qualquer dado clínico — mesmo que você tenha esse conhecimento de outra fonte. Informe ao usuário que o exame não está cadastrado e peça que confirme o nome ou entre em contato com o setor.\n`
     return { context, sources }
   }
 
