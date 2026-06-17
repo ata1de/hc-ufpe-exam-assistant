@@ -1,0 +1,106 @@
+[
+  {
+    "sigla": "TCTX",
+    "nome": "TOMOGRAFIA DO TORAX SEM CONTRASTE",
+    "nome_usual": "TOMOGRAFIA DO TORAX SEM CONTRASTE",
+    "sinonimos": ["tc torax", "tomografia pulmao"],
+    "modalidade": "tomografia_computadorizada",
+    "preparo_id": "tc_simples"
+  },
+  {
+    "sigla": "TCABDC",
+    "nome": "TOMOGRAFIA DE ABDOME COM CONTRASTE",
+    "nome_usual": "TOMOGRAFIA DO ABDOME COM CONTRASTE",
+    "sinonimos": ["tc abdome contraste"],
+    "modalidade": "tomografia_computadorizada",
+    "preparo_id": "tc_contraste"
+  },
+  {
+    "sigla": "RMCRA",
+    "nome": "RESSONANCIA DE CRANIO",
+    "nome_usual": "RESSONANCIA MAGNETICA DE CRANIO",
+    "sinonimos": ["rm cerebro", "mri cabeca"],
+    "modalidade": "ressonancia_magnetica",
+    "preparo_id": "rm_simples"
+  },
+  {
+    "sigla": "RMABDC",
+    "nome": "RESSONANCIA DE ABDOME COM CONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DE ABDOME COM CONTRASTE",
+    "sinonimos": ["rm abdome contraste"],
+    "modalidade": "ressonancia_magnetica",
+    "preparo_id": "rm_contraste"
+  },
+  {
+    "sigla": "USABD",
+    "nome": "ULTRASSONOGRAFIA DE ABDOME TOTAL",
+    "nome_usual": "US DE ABDOME TOTAL",
+    "sinonimos": ["eco abdominal", "us barriga"],
+    "modalidade": "ultrassonografia",
+    "preparo_id": "us_abdome"
+  },
+  {
+    "sigla": "USPELV",
+    "nome": "ULTRASSONOGRAFIA PELVICA",
+    "nome_usual": "US PELVICA",
+    "sinonimos": ["eco pelvica"],
+    "modalidade": "ultrassonografia",
+    "preparo_id": "us_pelvica_vias_urinarias"
+  },
+  {
+    "sigla": "USOBS",
+    "nome": "ULTRASSONOGRAFIA OBSTETRICA",
+    "nome_usual": "US OBSTETRICA",
+    "sinonimos": ["eco gestacional"],
+    "modalidade": "ultrassonografia",
+    "preparo_id": "us_obstetrica"
+  },
+  {
+    "sigla": "RXTX",
+    "nome": "RAIO X DE TORAX",
+    "nome_usual": "RX DE TORAX",
+    "sinonimos": ["raio x pulmao", "rx pulmao"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "radiologia_sem_preparo"
+  },
+  {
+    "sigla": "RXHSG",
+    "nome": "HISTEROSSALPINGOGRAFIA",
+    "nome_usual": "HSG",
+    "sinonimos": ["raio x utero"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_histerossalpingografia"
+  },
+  {
+    "sigla": "RXENEMA",
+    "nome": "ENEMA OPACO ADULTO",
+    "nome_usual": "RAIO X ENEMA OPACO",
+    "sinonimos": ["enema baritado"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_enema_opaco_adulto"
+  },
+  {
+    "sigla": "MAM",
+    "nome": "MAMOGRAFIA BILATERAL",
+    "nome_usual": "MAMOGRAFIA",
+    "sinonimos": ["raio x mama"],
+    "modalidade": "mamografia",
+    "preparo_id": "mamografia"
+  },
+  {
+    "sigla": "DMO",
+    "nome": "DENSITOMETRIA OSSEA",
+    "nome_usual": "DENSITOMETRIA OSSEA",
+    "sinonimos": ["dexa", "dmo"],
+    "modalidade": "densitometria_ossea",
+    "preparo_id": "densitometria_ossea"
+  },
+  {
+    "sigla": "CINTOSS",
+    "nome": "CINTILOGRAFIA OSSEA",
+    "nome_usual": "CINTILOGRAFIA OSSEA",
+    "sinonimos": ["medicina nuclear ossea"],
+    "modalidade": "medicina_nuclear",
+    "preparo_id": "medicina_nuclear_generico"
+  }
+]

@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "orientacoes_gerais": {
+      "titulo": "Orientações gerais — comuns a todos os exames da UDI",
+      "orientacoes": "Comparecer ao Hospital das Clínicas da UFPE com 30 minutos de antecedência. Levar documento de identificação com foto, Cartão do SUS, Cartão do Hospital e o pedido médico original. Trazer exames anteriores relacionados, se houver. Avisar com antecedência se o paciente é de isolamento, acamado, em uso de oxigênio contínuo ou obeso.",
+      "telefones": {
+        "imagem_geral": "(81) 2126 3633",
+        "tomografia_ressonancia": "(81) 2126 3873",
+        "ultrassonografia_densitometria": "(81) 2126 3884",
+        "raio_x_contrastado": "(81) 2126 3872"
+      }
+    }
+  },
+  "preparos": {
+    "tc_simples": {
+      "titulo": "Tomografia computadorizada sem contraste e sem sedação",
+      "orientacoes": "",
+      "status": "pendente",
+      "fallback": "O preparo específico deste exame ainda não está cadastrado em nossa base. NÃO presuma que o exame dispensa preparo. Por favor, entre em contato com o setor de Tomografia/Ressonância pelo telefone (81) 2126 3873 para confirmar as orientações antes do dia do exame."
+    },
+    "tc_contraste": {
+      "titulo": "Tomografia computadorizada com contraste",
+      "orientacoes": "",
+      "status": "pendente",
+      "fallback": "O preparo específico deste exame ainda não está cadastrado em nossa base. Como envolve contraste, é IMPRESCINDÍVEL confirmar com o setor de Tomografia/Ressonância pelo telefone (81) 2126 3873, pois pode haver exigência de exame de creatinina recente, jejum e suspensão de medicações."
+    },
+    "rm_simples": {
+      "titulo": "Ressonância magnética sem contraste e sem sedação",
+      "orientacoes": "Não utilizar pertences de metal (relógio, pulseira, brincos e outros). Chegar ao serviço 30 minutos antes do horário marcado. Levar documento de identificação (Carteira de Identidade, Cartão do SUS, Cartão do Hospital). Pacientes grávidas devem preencher o Termo de Consentimento específico (gestantes).",
+      "observacoes": "Pacientes ambulatoriais: pedido pelo AGHU + APAC (marcação pela UBS/Secretaria de Saúde). Pacientes internados: solicitação pelo AGHU.",
+      "status": "parcial"
+    },
+    "rm_contraste": {
+      "titulo": "Ressonância magnética com contraste",
+      "orientacoes": "Na véspera do exame: tomar 1 comprimido de Polaramine 6 mg às 22h. No dia do exame: tomar 1 comprimido de Polaramine 6 mg, 3h antes do horário do exame. NÃO tomar a medicação para diabetes no dia do exame e nas 48h seguintes. Chegar ao serviço 30 minutos antes da hora marcada. Informar se está gestante. Realizar jejum de 4h (comida e bebida). Se o exame for de abdômen ou colangiorressonância, jejum de 8h. Trazer um acompanhante. Trazer documentos pessoais (Carteira de Identidade, CPF, Cartão do SUS e Cartão do Hospital). Trazer a relação dos medicamentos que faz uso. Não usar pertences de metal. Trazer exame de dosagem de creatinina solicitado no agendamento. Trazer exames anteriores de imagem (tomografia, ressonância e arteriografia). Paciente hipertenso NÃO suspender uso da medicação.",
+      "status": "ok"
+    },
+    "us_abdome": {
+      "titulo": "Ultrassonografia de abdômen / abdômen total / superior",
+      "orientacoes": "Jejum de 4 a 6h. Para abdômen total: utilizar Luftal (simeticona) 40 gotas de 6 em 6 horas no dia anterior ao exame e na manhã do exame.",
+      "status": "ok"
+    },
+    "us_pelvica_vias_urinarias": {
+      "titulo": "Ultrassonografia pélvica / vias urinárias",
+      "orientacoes": "Comparecer com a bexiga cheia. No setor, o paciente também será orientado a ingerir água para tal.",
+      "status": "ok"
+    },
+    "us_obstetrica": {
+      "titulo": "Ultrassonografia obstétrica",
+      "orientacoes": "",
+      "status": "pendente",
+      "fallback": "O preparo específico para ultrassonografia obstétrica ainda não está cadastrado em nossa base. Por favor, confirme com o setor de Ultrassonografia pelo telefone (81) 2126 3884."
+    },
+    "radiologia_sem_preparo": {
+      "titulo": "Radiologia convencional (raio-X simples)",
+      "orientacoes": "Em geral não exige preparo. Comparecer ao local na data e horário marcados com o Cartão do Hospital e a solicitação do exame.",
+      "observacoes": "Apenas exames de raio-X contrastados exigem preparo. Solicitação obrigatória pelo AGHU. Informar ao setor se o paciente é de isolamento (contato/respiratório), acamado/com limitação de mobilidade, em suporte de oxigênio contínuo ou obeso.",
+      "status": "ok"
+    },
+    "rx_histerossalpingografia": {
+      "titulo": "Raio-X contrastado — Histerossalpingografia",
+      "orientacoes": "ATENÇÃO: o exame deve ser realizado entre o 6º e o 12º dia da menstruação. NÃO pode ser realizado em mulheres em uso de DIU, com corrimento vaginal ou sangramento. Antes do exame: abstinência sexual 3 dias antes; na véspera tomar 3 comprimidos de bisacodil 5 mg (Dulcolax) após o jantar; jejum de 3 horas antes do exame. No dia do exame: 30 minutos antes do horário agendado, 40 gotas ou 2 comprimidos via oral de antiespasmódico (buscopam simples ou composto), caso não seja alérgica; em caso de alergia, usar analgésico de costume. Trazer absorvente higiênico.",
+      "observacoes": "Exames a trazer: Beta-HCG negativo (até 3 dias antes); preventivo/colposcopia com até 6 meses; cultura de secreção vaginal negativa com até 6 meses; exames anteriores.",
+      "status": "ok"
+    },
+    "rx_enema_opaco_adulto": {
+      "titulo": "Raio-X contrastado — Enema opaco (adulto)",
+      "orientacoes": "Antevéspera: evitar alimentos gordurosos, leite, café, legumes e verduras; às 20h tomar 01 vidro de Laxol ou 04 comprimidos de Dulcolax. Dieta líquida ou pastosa. Véspera: tomar 40 gotas de Luftal de 8 em 8 horas, seguindo cronograma específico das 7h às 21h com dieta líquida, água, Dulcolax e leite de magnésia. No dia do exame: jejum absoluto de 12 horas.",
+      "status": "ok"
+    },
+    "mamografia": {
+      "titulo": "Mamografia",
+      "orientacoes": "Trazer todos os exames de mamografia e ultrassonografia de mama anteriores. Não utilizar medicações sobre a pele na região da mama no dia do exame. Não utilizar desodorante antes de vir para o exame. Não utilizar talco na região das mamas nem nos arredores antes do exame.",
+      "status": "ok"
+    },
+    "densitometria_ossea": {
+      "titulo": "Densitometria óssea",
+      "orientacoes": "Comparecer ao Hospital das Clínicas com uma hora de antecedência. Não é necessário jejum. Qualquer medicação contendo cálcio deve ser suspensa por 24 horas antes da data agendada. Não realizar exames com contraste radiológico (bário, iodo, lipiodol) por pelo menos 48h antes da data agendada. Não realizar exames de medicina nuclear com injeção de radiotraçadores (principalmente cintilografia óssea) por pelo menos 24h antes. Vestir roupas confortáveis e sem excesso de objetos metálicos, principalmente na região lombar e da cintura. O paciente deverá preencher o questionário de densitometria óssea antes do exame.",
+      "status": "ok"
+    },
+    "medicina_nuclear_generico": {
+      "titulo": "Medicina nuclear / cintilografia",
+      "orientacoes": "",
+      "status": "pendente",
+      "fallback": "Cada tipo de cintilografia tem preparo próprio e este ainda não está cadastrado. Por favor, entre em contato com o setor de imagem pelo telefone (81) 2126 3633 para confirmar as orientações específicas antes do dia do exame."
+    }
+  }
+}
