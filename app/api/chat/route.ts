@@ -3,6 +3,7 @@ import { generateText } from "ai"
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
 import { searchExames } from "@/lib/search"
+import { generateMockResponse } from "@/lib/mock-response"
 import type { ChatMessage, Exame, PreparosFile, Profile, Source } from "@/lib/types"
 
 export const runtime = "nodejs"
@@ -74,6 +75,8 @@ function buildContext(matched: Exame[]): { context: string; sources: Source[] } 
 }
 
 export async function POST(req: Request) {
+  let fallbackMessage = ""
+  let fallbackProfile: Profile = "patient"
   try {
     const body = (await req.json()) as {
       message: string
@@ -82,16 +85,17 @@ export async function POST(req: Request) {
     }
 
     const { message, profile = "patient", history = [] } = body
+    fallbackMessage = message
+    fallbackProfile = profile
 
     if (!message || typeof message !== "string") {
       return Response.json({ error: "Mensagem inválida." }, { status: 400 })
     }
 
     if (!process.env.CLAUDE_API_KEY) {
-      return Response.json(
-        { error: "CLAUDE_API_KEY não configurada no servidor." },
-        { status: 500 },
-      )
+      // Sem chave configurada: usa resposta determinística a partir da base.
+      const mock = generateMockResponse(message, profile)
+      return Response.json({ reply: mock.reply, sources: mock.sources, mocked: true })
     }
 
     const anthropic = createAnthropic({ apiKey: process.env.CLAUDE_API_KEY })
@@ -117,17 +121,16 @@ export async function POST(req: Request) {
     return Response.json({ reply: text, sources })
   } catch (err) {
     const raw = err instanceof Error ? err.message : String(err)
-    console.log("[v0] /api/chat error:", raw)
+    console.log("[v0] /api/chat IA indisponível, usando fallback determinístico:", raw)
 
-    let friendly = "Erro ao processar a solicitação. Tente novamente."
-    if (/credit balance is too low/i.test(raw)) {
-      friendly =
-        "O serviço de IA está temporariamente indisponível (saldo de créditos da API insuficiente). Por favor, avise o responsável técnico para regularizar o acesso."
-    } else if (/api[_\s-]?key|authentication|invalid x-api-key/i.test(raw)) {
-      friendly =
-        "Falha de autenticação com o serviço de IA. Verifique a chave de API configurada (CLAUDE_API_KEY)."
+    // IA indisponível (saldo, autenticação, rede, etc.): responde a partir da base.
+    if (fallbackMessage) {
+      const mock = generateMockResponse(fallbackMessage, fallbackProfile)
+      return Response.json({ reply: mock.reply, sources: mock.sources, mocked: true })
     }
-
-    return Response.json({ error: friendly }, { status: 500 })
+    return Response.json(
+      { error: "Erro ao processar a solicitação. Tente novamente." },
+      { status: 500 },
+    )
   }
 }

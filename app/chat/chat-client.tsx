@@ -257,7 +257,7 @@ function MessageBubble({ message }: { message: DisplayMessage }) {
             : "bg-card border border-border text-card-foreground rounded-bl-sm",
         )}
       >
-        <div className="whitespace-pre-wrap">{message.content}</div>
+        <FormattedContent text={message.content} isUser={isUser} />
 
         {message.sources && message.sources.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5 border-t border-border/60 pt-2.5">
@@ -277,6 +277,73 @@ function MessageBubble({ message }: { message: DisplayMessage }) {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function renderInline(text: string) {
+  // Suporta **negrito** e _itálico_ de forma simples.
+  const parts = text.split(/(\*\*[^*]+\*\*|_[^_]+_)/g)
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      )
+    }
+    if (part.startsWith("_") && part.endsWith("_") && part.length > 2) {
+      return (
+        <em key={i} className="opacity-80">
+          {part.slice(1, -1)}
+        </em>
+      )
+    }
+    return <span key={i}>{part}</span>
+  })
+}
+
+function FormattedContent({ text, isUser }: { text: string; isUser: boolean }) {
+  const lines = text.split("\n")
+
+  return (
+    <div className="flex flex-col gap-1">
+      {lines.map((line, i) => {
+        const trimmed = line.trim()
+
+        if (trimmed === "---") {
+          return (
+            <hr
+              key={i}
+              className={cn(
+                "my-2 border-t",
+                isUser ? "border-primary-foreground/30" : "border-border",
+              )}
+            />
+          )
+        }
+
+        if (trimmed === "") {
+          return <div key={i} className="h-1.5" aria-hidden="true" />
+        }
+
+        if (trimmed.startsWith("- ")) {
+          return (
+            <div key={i} className="flex gap-2 pl-1">
+              <span
+                className={cn(
+                  "mt-1.5 size-1.5 shrink-0 rounded-full",
+                  isUser ? "bg-primary-foreground/60" : "bg-primary/60",
+                )}
+                aria-hidden="true"
+              />
+              <span>{renderInline(trimmed.slice(2))}</span>
+            </div>
+          )
+        }
+
+        return <p key={i}>{renderInline(trimmed)}</p>
+      })}
     </div>
   )
 }
