@@ -41,13 +41,12 @@ const PROFILE_META: Record<
   patient: {
     label: "Paciente",
     icon: User,
-    badgeClass: "bg-patient-bg text-patient-border border-patient-border",
+    badgeClass: "bg-mist text-azure border-transparent",
   },
   professional: {
     label: "Profissional",
     icon: Stethoscope,
-    badgeClass:
-      "bg-professional-bg text-professional-border border-professional-border",
+    badgeClass: "bg-professional-bg text-azure-deep border-transparent",
   },
 }
 
@@ -129,21 +128,21 @@ export function ChatClient() {
   return (
     <div className="flex flex-col h-svh bg-background">
       {/* Header */}
-      <header className="shrink-0 border-b border-border bg-card/80 backdrop-blur">
+      <header className="shrink-0 border-b border-border bg-card/85 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-3 min-w-0">
             <Link
               href="/"
-              className="flex size-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex size-9 shrink-0 items-center justify-center rounded-lg text-steel transition-colors hover:bg-mist hover:text-azure-deep"
               aria-label="Voltar ao início"
             >
               <ArrowLeft className="size-5" />
             </Link>
             <div className="min-w-0">
-              <h1 className="font-serif text-lg leading-tight text-foreground truncate">
+              <h1 className="font-serif text-lg leading-tight text-ink truncate">
                 Assistente UDI HC-UFPE
               </h1>
-              <p className="text-xs text-muted-foreground">
+              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-steel">
                 Preparo de exames de imagem
               </p>
             </div>
@@ -164,16 +163,15 @@ export function ChatClient() {
       </header>
 
       {/* Warning banner */}
-      <div className="shrink-0 bg-warning-bg">
+      <div className="shrink-0 border-b border-border bg-mist/60">
         <div className="mx-auto flex max-w-2xl items-start gap-2 px-4 py-2.5">
           <Info
-            className="mt-0.5 size-4 shrink-0 text-warning-foreground"
+            className="mt-0.5 size-4 shrink-0 text-azure"
             aria-hidden="true"
           />
-          <p className="text-xs leading-relaxed text-warning-foreground">
-            Este assistente fornece orientações de apoio com base na
-            documentação oficial da UDI/HC-UFPE. Não substitui a orientação da
-            equipe de saúde.
+          <p className="text-xs leading-relaxed text-azure-deep">
+            Orientações de apoio com base na documentação oficial da
+            UDI/HC-UFPE. Não substitui a orientação da equipe de saúde.
           </p>
         </div>
       </div>
@@ -182,25 +180,25 @@ export function ChatClient() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-2xl px-4 py-6 flex flex-col gap-4">
           {messages.length === 0 && (
-            <div className="flex flex-col items-center text-center py-8">
-              <div className="flex size-14 items-center justify-center rounded-2xl bg-secondary text-primary">
-                <ProfileIcon className="size-7" aria-hidden="true" />
+            <div className="flex flex-col items-center text-center py-10">
+              <div className="flex size-16 items-center justify-center rounded-2xl bg-mist text-azure">
+                <ProfileIcon className="size-8" aria-hidden="true" />
               </div>
-              <h2 className="mt-4 text-base font-semibold text-foreground">
-                Olá! Como posso ajudar?
+              <h2 className="mt-5 font-serif text-2xl text-ink">
+                Como posso ajudar?
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground max-w-sm leading-relaxed">
+              <p className="mt-2 text-sm text-steel max-w-sm leading-relaxed">
                 {profile === "professional"
-                  ? "Consulte protocolos, contraindicações, fluxo de agendamento e preparos específicos. Comece com uma das sugestões abaixo."
-                  : "Pergunte sobre jejum, contraste, documentos ou onde marcar seu exame. Você pode começar com uma das sugestões abaixo."}
+                  ? "Consulte protocolos, contraindicações, fluxo de agendamento e preparos específicos."
+                  : "Pergunte sobre jejum, contraste, documentos ou onde marcar seu exame."}
               </p>
-              <div className="mt-6 grid w-full gap-2 sm:grid-cols-2">
+              <div className="mt-7 grid w-full gap-2.5 sm:grid-cols-2">
                 {SUGGESTIONS[profile].map((s) => (
                   <button
                     key={s}
                     type="button"
                     onClick={() => sendMessage(s)}
-                    className="rounded-xl border border-border bg-card px-4 py-3 text-left text-sm text-foreground transition-colors hover:border-primary hover:bg-secondary"
+                    className="rounded-xl border border-border bg-card px-4 py-3 text-left text-sm text-foreground transition-colors hover:border-azure hover:bg-mist"
                   >
                     {s}
                   </button>
@@ -234,7 +232,7 @@ export function ChatClient() {
             }}
             placeholder="Digite sua pergunta sobre o exame..."
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/30 max-h-32"
+            className="flex-1 resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-azure focus:ring-2 focus:ring-azure/25 max-h-32"
             aria-label="Mensagem"
           />
           <Button
@@ -254,32 +252,35 @@ export function ChatClient() {
 
 function MessageBubble({ message }: { message: DisplayMessage }) {
   const isUser = message.role === "user"
+  const hasSources = !isUser && message.sources && message.sources.length > 0
 
+  if (isUser) {
+    return (
+      <div className="flex w-full justify-end">
+        <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-3 text-sm leading-relaxed text-primary-foreground">
+          <FormattedContent text={message.content} isUser />
+        </div>
+      </div>
+    )
+  }
+
+  // Assistant
   return (
-    <div
-      className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}
-    >
-      <div
-        className={cn(
-          "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
-          isUser
-            ? "bg-primary text-primary-foreground rounded-br-sm"
-            : "bg-card border border-border text-card-foreground rounded-bl-sm",
-        )}
-      >
-        <FormattedContent text={message.content} isUser={isUser} />
+    <div className="flex w-full justify-start">
+      <div className="max-w-[88%] rounded-2xl rounded-bl-sm border border-border bg-card px-4 py-3 text-sm leading-relaxed text-card-foreground">
+        <FormattedContent text={message.content} isUser={false} />
 
-        {message.sources && message.sources.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5 border-t border-border/60 pt-2.5">
-            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+        {hasSources && (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-border/60 pt-2.5">
+            <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.14em] text-steel">
               <FileText className="size-3" aria-hidden="true" />
-              Fontes:
+              Fonte
             </span>
-            {message.sources.map((src) => (
+            {message.sources!.map((src) => (
               <Badge
                 key={src.sigla}
                 variant="secondary"
-                className="text-[10px] font-normal"
+                className="bg-mist text-[10px] font-normal text-azure-deep"
               >
                 {src.nome}
               </Badge>
@@ -349,13 +350,13 @@ function FormattedContent({ text, isUser }: { text: string; isUser: boolean }) {
 function TypingIndicator() {
   return (
     <div className="flex justify-start">
-      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-border bg-card px-4 py-3.5">
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-border bg-card px-5 py-4">
         <span className="sr-only">Assistente digitando</span>
         {[0, 1, 2].map((i) => (
           <span
             key={i}
-            className="size-2 rounded-full bg-muted-foreground/50 animate-bounce"
-            style={{ animationDelay: `${i * 0.15}s` }}
+            className="size-2.5 rounded-full bg-azure/70 animate-bounce"
+            style={{ animationDelay: `${i * 0.18}s` }}
           />
         ))}
       </div>
