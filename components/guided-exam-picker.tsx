@@ -151,19 +151,13 @@ function ExamChip({
   exam: ExamOption
   onClick: () => void
 }) {
-  const pendente = exam.status === "pendente"
   return (
     <button
       type="button"
       onClick={onClick}
-      className={cn(CHIP_CLASS, "justify-between", pendente && "text-steel")}
+      className={cn(CHIP_CLASS, "justify-between")}
     >
       <span className="flex-1">{exam.label}</span>
-      {pendente && (
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-steel">
-          preparo sob consulta
-        </span>
-      )}
     </button>
   )
 }
