@@ -36,6 +36,5 @@ export type PreparosFile = {
 }
 
 export type Source = {
-  sigla: string
   nome: string
 }

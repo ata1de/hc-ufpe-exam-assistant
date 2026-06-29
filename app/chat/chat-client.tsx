@@ -276,9 +276,9 @@ function MessageBubble({ message }: { message: DisplayMessage }) {
               <FileText className="size-3" aria-hidden="true" />
               Fonte
             </span>
-            {message.sources!.map((src) => (
+            {message.sources!.map((src, i) => (
               <Badge
-                key={src.sigla}
+                key={`${src.nome}-${i}`}
                 variant="secondary"
                 className="bg-mist text-[10px] font-normal text-azure-deep"
               >
