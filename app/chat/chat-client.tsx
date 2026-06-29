@@ -14,6 +14,7 @@ import {
 import ReactMarkdown from "react-markdown"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { GuidedExamPicker } from "@/components/guided-exam-picker"
 import type { ChatMessage, Profile, Source } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
@@ -190,20 +191,25 @@ export function ChatClient() {
               <p className="mt-2 text-sm text-steel max-w-sm leading-relaxed">
                 {profile === "professional"
                   ? "Consulte protocolos, contraindicações, fluxo de agendamento e preparos específicos."
-                  : "Pergunte sobre jejum, contraste, documentos ou onde marcar seu exame."}
+                  : "Selecione seu exame abaixo — ou, se já souber o nome, digite na caixa de mensagem."}
               </p>
-              <div className="mt-7 grid w-full gap-2.5 sm:grid-cols-2">
-                {SUGGESTIONS[profile].map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => sendMessage(s)}
-                    className="rounded-xl border border-border bg-card px-4 py-3 text-left text-sm text-foreground transition-colors hover:border-azure hover:bg-mist"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+
+              {profile === "professional" ? (
+                <div className="mt-7 grid w-full gap-2.5 sm:grid-cols-2">
+                  {SUGGESTIONS.professional.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => sendMessage(s)}
+                      className="rounded-xl border border-border bg-card px-4 py-3 text-left text-sm text-foreground transition-colors hover:border-azure hover:bg-mist"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <GuidedExamPicker onSubmit={(q) => sendMessage(q)} />
+              )}
             </div>
           )}
 
