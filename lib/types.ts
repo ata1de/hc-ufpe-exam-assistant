@@ -24,6 +24,12 @@ export type Preparo = {
   fallback?: string
 }
 
+export type FluxoRaiox = {
+  titulo: string
+  passos: string[]
+  telefone: string
+}
+
 export type PreparosFile = {
   meta: {
     orientacoes_gerais: {
@@ -31,6 +37,7 @@ export type PreparosFile = {
       orientacoes: string
       telefones: Record<string, string>
     }
+    fluxo_raiox?: FluxoRaiox
   }
   preparos: Record<string, Preparo>
 }

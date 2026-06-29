@@ -9,6 +9,20 @@
         "ultrassonografia_densitometria": "(81) 2126 3884",
         "raio_x_contrastado": "(81) 2126 3872"
       }
+    },
+    "fluxo_raiox": {
+      "titulo": "Fluxo de solicitação e realização — Raio-X (HC-UFPE)",
+      "passos": [
+        "1. As solicitações devem ser feitas obrigatoriamente pelo sistema AGHU.",
+        "2. Os técnicos em radiologia de plantão avaliam a solicitação e optam pela realização do exame in loco ou acionam o setor demandante para que o paciente vá ao setor de Diagnóstico para fazer o exame; neste caso, os técnicos em radiologia acionam o maqueiro.",
+        "3. É importante que o setor sempre avise caso o paciente tenha alguma restrição:",
+        "3.1 Se o paciente é de isolamento — qual tipo: contato ou respiratório?",
+        "3.2 Se o paciente tem limitação de mobilidade e está acamado.",
+        "3.3 Se o paciente precisa de suporte de oxigênio contínuo.",
+        "3.4 Se o paciente é obeso.",
+        "Observação: apenas os exames de raio-X contrastados exigem preparo."
+      ],
+      "telefone": "(81) 2126 3872"
     }
   },
   "preparos": {
@@ -35,7 +49,7 @@
       "orientacoes": "Na véspera do exame: tomar 1 comprimido de Polaramine 6 mg às 22h. No dia do exame: tomar 1 comprimido de Polaramine 6 mg, 3h antes do horário do exame. NÃO tomar a medicação para diabetes no dia do exame e nas 48h seguintes. Chegar ao serviço 30 minutos antes da hora marcada. Informar se está gestante. Realizar jejum de 4h (comida e bebida). Se o exame for de abdômen ou colangiorressonância, jejum de 8h. Trazer um acompanhante. Trazer documentos pessoais (Carteira de Identidade, CPF, Cartão do SUS e Cartão do Hospital). Trazer a relação dos medicamentos que faz uso. Não usar pertences de metal. Trazer exame de dosagem de creatinina solicitado no agendamento. Trazer exames anteriores de imagem (tomografia, ressonância e arteriografia). Paciente hipertenso NÃO suspender uso da medicação.",
       "status": "ok"
     },
-    "us_abdome": {
+    "us_abdômen": {
       "titulo": "Ultrassonografia de abdômen / abdômen total / superior",
       "orientacoes": "Jejum de 4 a 6h. Para abdômen total: utilizar Luftal (simeticona) 40 gotas de 6 em 6 horas no dia anterior ao exame e na manhã do exame.",
       "status": "ok"
@@ -60,12 +74,44 @@
     "rx_histerossalpingografia": {
       "titulo": "Raio-X contrastado — Histerossalpingografia",
       "orientacoes": "ATENÇÃO: o exame deve ser realizado entre o 6º e o 12º dia da menstruação. NÃO pode ser realizado em mulheres em uso de DIU, com corrimento vaginal ou sangramento. Antes do exame: abstinência sexual 3 dias antes; na véspera tomar 3 comprimidos de bisacodil 5 mg (Dulcolax) após o jantar; jejum de 3 horas antes do exame. No dia do exame: 30 minutos antes do horário agendado, 40 gotas ou 2 comprimidos via oral de antiespasmódico (buscopam simples ou composto), caso não seja alérgica; em caso de alergia, usar analgésico de costume. Trazer absorvente higiênico.",
-      "observacoes": "Exames a trazer: Beta-HCG negativo (até 3 dias antes); preventivo/colposcopia com até 6 meses; cultura de secreção vaginal negativa com até 6 meses; exames anteriores.",
+      "observacoes": "Exames a trazer: Beta-HCG negativo (realizado até 3 dias antes do exame); preventivo/colposcopia com até 6 meses antes do exame; cultura de secreção vaginal negativa com até 6 meses antes do exame; exames anteriores de Ultrassonografia pélvica, Ressonância magnética ou Histerossalpingografia.",
       "status": "ok"
     },
     "rx_enema_opaco_adulto": {
       "titulo": "Raio-X contrastado — Enema opaco (adulto)",
       "orientacoes": "Antevéspera: evitar alimentos gordurosos, leite, café, legumes e verduras; às 20h tomar 01 vidro de Laxol ou 04 comprimidos de Dulcolax. Dieta líquida ou pastosa. Véspera: tomar 40 gotas de Luftal de 8 em 8 horas, seguindo cronograma específico das 7h às 21h com dieta líquida, água, Dulcolax e leite de magnésia. No dia do exame: jejum absoluto de 12 horas.",
+      "status": "ok"
+    },
+    "rx_enema_opaco_crianca": {
+      "titulo": "Raio-X contrastado — Enema opaco (criança a partir de 7 anos)",
+      "orientacoes": "Antevéspera do exame: evitar alimentos gordurosos, leite, café, legumes e verduras; às 20h tomar 01 comprimido de Dulcolax. Véspera do exame: às 21h tomar 01 comprimido de Dulcolax. No dia do exame: jejum de 6 horas.",
+      "observacoes": "Indicado para crianças a partir de 7 anos.",
+      "status": "ok"
+    },
+    "rx_esofago": {
+      "titulo": "Raio-X contrastado — Exame de esôfago",
+      "orientacoes": "Realizar jejum de 6 horas antes do exame. Não há necessidade de outro preparo: comparecer ao local de realização do exame na data e horário marcados, com o Cartão do Hospital e a solicitação do exame.",
+      "status": "ok"
+    },
+    "rx_urografia_excretora": {
+      "titulo": "Raio-X contrastado — Urografia excretora",
+      "orientacoes": "Véspera do exame: evitar alimentos gordurosos, como leite e café; jantar leve até as 18h; jejum absoluto após o jantar por 12 horas. Medicação: ingerir após o jantar 03 comprimidos de Dulcolax. No dia do exame: jejum absoluto de 12 horas.",
+      "status": "ok"
+    },
+    "rx_uretrocistografia_adulto": {
+      "titulo": "Raio-X contrastado — Uretrocistografia miccional (adulto)",
+      "orientacoes": "Tomar Norfloxacino 400 mg de 12 em 12 horas por 3 dias: na véspera do exame, no dia do exame e um dia após o exame.",
+      "status": "ok"
+    },
+    "rx_transito_intestinal": {
+      "titulo": "Raio-X contrastado — Trânsito intestinal",
+      "orientacoes": "No dia do exame: o paciente deverá estar em jejum por 6 horas.",
+      "status": "ok"
+    },
+    "rx_uretrocistografia_crianca": {
+      "titulo": "Raio-X contrastado — Uretrocistografia miccional (criança)",
+      "orientacoes": "Tomar Norfloxacino 400 mg de 12 em 12 horas por 3 dias: na véspera do exame, no dia do exame e um dia após o exame.",
+      "observacoes": "Em crianças, confirmar a dose do antibiótico com o médico solicitante conforme a prescrição.",
       "status": "ok"
     },
     "mamografia": {

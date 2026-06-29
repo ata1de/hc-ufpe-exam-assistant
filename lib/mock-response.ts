@@ -1,6 +1,6 @@
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
-import { searchExames } from "@/lib/search"
+import { searchExames, normalize } from "@/lib/search"
 import type { Exame, PreparosFile, Profile, Source } from "@/lib/types"
 
 const exames = examesData as Exame[]
@@ -25,6 +25,54 @@ function phoneForModalidade(modalidade: string): string {
 const semPreparoRegex =
   /n[aã]o\s+exige|n[aã]o\s+[eé]\s+necess[aá]rio\s+jejum|geralmente n[aã]o|n[aã]o\s+[eé]\s+necess[aá]rio\s+preparo/i
 
+const fluxoRxRegex =
+  /\bfluxo\b|\baghu\b|solicit|maqueir|tecnic|passo a passo|como pedir|como solicitar|pedir exame|realizacao do exame|in loco/
+
+function wantsFluxoRaiox(query: string): boolean {
+  const q = normalize(query)
+  const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia/.test(q)
+  return (mentionsRaiox && fluxoRxRegex.test(q)) || /\baghu\b|maqueir/.test(q)
+}
+
+function wantsListaRaiox(query: string): boolean {
+  const q = normalize(query)
+  const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia|contrastad/.test(q)
+  const isListing =
+    /\bquais\b|\bque\b|lista|listar|todos|quantos|relacao|exigem|precisam|necessitam|exige|precisa de preparo|tem preparo|com preparo/.test(
+      q,
+    )
+  return mentionsRaiox && isListing
+}
+
+/** Monta a lista de exames de raio-X com preparo a partir da base. */
+function listaRaioxReply(): { reply: string; sources: Source[] } | null {
+  const lista = exames.filter(
+    (e) =>
+      e.modalidade === "radiologia_convencional" &&
+      e.preparo_id !== "radiologia_sem_preparo" &&
+      preparos.preparos[e.preparo_id],
+  )
+  if (lista.length === 0) return null
+  const reply =
+    `**Exames de raio-X que exigem preparo**\n\n` +
+    `Em radiologia convencional, apenas os exames de raio-X **contrastados** exigem preparo (o raio-X simples não exige). São eles:\n\n` +
+    lista.map((e) => `- **${e.nome}**`).join("\n") +
+    `\n\nPara o preparo detalhado de cada um, informe o exame desejado.`
+  const sources: Source[] = lista.map((e) => ({ nome: e.nome }))
+  return { reply, sources }
+}
+
+/** Monta a resposta do fluxo operacional de raio-X a partir da base. */
+function fluxoReply(): { reply: string; sources: Source[] } | null {
+  const fluxo = preparos.meta.fluxo_raiox
+  if (!fluxo) return null
+  const reply =
+    `**${fluxo.titulo}**\n\n` +
+    fluxo.passos.map((p) => p).join("\n") +
+    `\n\n**Telefone do setor de Raio-X contrastado:** ${fluxo.telefone}`
+  return { reply, sources: [{ nome: "Fluxo de solicitação Raio-X" }] }
+}
+
 /**
  * Gera uma resposta determinística (mock) a partir dos dados dos exames,
  * respeitando as regras de segurança clínica do HC-UFPE.
@@ -36,18 +84,30 @@ export function generateMockResponse(
 ): { reply: string; sources: Source[] } {
   const geral = preparos.meta.orientacoes_gerais
   const matched = searchExames(message, exames)
+  const fluxo = wantsFluxoRaiox(message) ? fluxoReply() : null
+
+  // Pergunta-lista ("quais exames de raio-X exigem preparo?"): responde a lista.
+  if (wantsListaRaiox(message)) {
+    const lista = listaRaioxReply()
+    if (lista) return lista
+  }
+
+  // Pergunta de fluxo sem exame específico: responde só o fluxo.
+  if (fluxo && matched.length === 0) {
+    return fluxo
+  }
 
   if (matched.length === 0) {
     const reply =
       profile === "professional"
-        ? "Não consegui identificar o exame na sua solicitação. Informe a sigla ou o nome do exame (ex.: TCTX, RMABDC, USABD) para que eu retorne o protocolo de preparo correspondente.\n\n" +
+        ? "Não consegui identificar o exame na sua solicitação. Informe o nome do exame (ex.: tomografia de tórax, ressonância de abdômen, ultrassonografia de abdômen) para que eu retorne o protocolo de preparo correspondente.\n\n" +
           `Em caso de dúvida sobre o cadastro, contato da Imagem Geral: ${geral.telefones.imagem_geral}.`
         : "Não consegui identificar o exame na sua pergunta. Você pode me dizer o nome do exame que vai realizar? Por exemplo: tomografia de tórax, ressonância de abdômen, ultrassonografia, mamografia, raio-X, densitometria.\n\n" +
           `Se preferir, ligue para a Imagem Geral do HC-UFPE: ${geral.telefones.imagem_geral}.`
     return { reply, sources: [] }
   }
 
-  const sources: Source[] = matched.map((e) => ({ sigla: e.sigla, nome: e.nome }))
+  const sources: Source[] = matched.map((e) => ({ nome: e.nome }))
   const blocks: string[] = []
 
   for (const exame of matched) {
@@ -55,10 +115,8 @@ export function generateMockResponse(
     const phone = phoneForModalidade(exame.modalidade)
 
     if (profile === "professional") {
-      let b = `**${exame.nome} (${exame.sigla})**\n`
+      let b = `**${exame.nome}**\n`
       b += `Modalidade: ${exame.modalidade.replace(/_/g, " ")}\n`
-      b += `Protocolo: ${preparo.titulo}\n`
-      b += `Status do cadastro: ${preparo.status.toUpperCase()}\n`
 
       if (preparo.status === "pendente") {
         b += `\nPreparo específico NÃO cadastrado. Não orientar ausência de preparo. ${preparo.fallback}`
@@ -110,6 +168,13 @@ export function generateMockResponse(
       : `\n\n---\n**Documentos para levar:** documento de identificação com foto, Cartão do SUS, Cartão do Hospital e o pedido médico original. Traga também exames anteriores relacionados, se tiver.` +
         `\n\n**No dia:** chegue com 30 minutos de antecedência. Avise o setor com antecedência se você é de isolamento, acamado(a), usa oxigênio contínuo ou é obeso(a).`
 
-  const reply = blocks.join("\n\n---\n\n") + docsBlock
+  let reply = blocks.join("\n\n---\n\n") + docsBlock
+
+  // Exame(s) + pergunta de fluxo: anexa o passo a passo operacional.
+  if (fluxo) {
+    reply += `\n\n---\n\n${fluxo.reply}`
+    sources.push(...fluxo.sources)
+  }
+
   return { reply, sources }
 }

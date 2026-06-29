@@ -2,7 +2,7 @@ import { createAnthropic } from "@ai-sdk/anthropic"
 import { generateText } from "ai"
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
-import { searchExames } from "@/lib/search"
+import { searchExames, normalize } from "@/lib/search"
 import { generateMockResponse } from "@/lib/mock-response"
 import type { ChatMessage, Exame, PreparosFile, Profile, Source } from "@/lib/types"
 
@@ -32,7 +32,57 @@ const SYSTEM_PROMPTS: Record<Profile, string> = {
     "Use linguagem técnica e operacional.",
 }
 
-function buildContext(matched: Exame[]): { context: string; sources: Source[] } {
+// Detecta perguntas sobre o fluxo operacional de raio-X (solicitação, AGHU, etc.)
+const FLUXO_RX_REGEX =
+  /\bfluxo\b|\baghu\b|solicit|maqueir|tecnic|passo a passo|como pedir|como solicitar|pedir exame|realizacao do exame|in loco/
+
+function wantsFluxoRaiox(query: string): boolean {
+  const q = normalize(query)
+  const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia/.test(q)
+  // Fluxo se cita raio-X + termo de fluxo, ou cita explicitamente AGHU/maqueiro.
+  return (
+    (mentionsRaiox && FLUXO_RX_REGEX.test(q)) ||
+    /\baghu\b|maqueir/.test(q)
+  )
+}
+
+// Detecta perguntas que pedem a LISTA de exames de raio-X que exigem preparo.
+function wantsListaRaiox(query: string): boolean {
+  const q = normalize(query)
+  const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia|contrastad/.test(q)
+  const isListing =
+    /\bquais\b|\bque\b|lista|listar|todos|quantos|relacao|exigem|precisam|necessitam|exige|precisa de preparo|tem preparo|com preparo/.test(
+      q,
+    )
+  return mentionsRaiox && isListing
+}
+
+// Deriva da base os exames de raio-X (radiologia convencional) que têm preparo
+// contrastado cadastrado — exclui o raio-X simples, que não exige preparo.
+function raioxComPreparo(): Exame[] {
+  return exames.filter((e) => {
+    if (e.modalidade !== "radiologia_convencional") return false
+    const preparo = preparos.preparos[e.preparo_id]
+    // Apenas contrastados têm preparo; o raio-X simples usa "radiologia_sem_preparo".
+    return preparo && e.preparo_id !== "radiologia_sem_preparo"
+  })
+}
+
+// Remove fontes repetidas (mesma sigla) — ex.: exame aparece na busca e na lista.
+function dedupeSources(sources: Source[]): Source[] {
+  const seen = new Set<string>()
+  return sources.filter((s) => {
+    if (seen.has(s.nome)) return false
+    seen.add(s.nome)
+    return true
+  })
+}
+
+function buildContext(
+  matched: Exame[],
+  includeFluxo: boolean,
+  includeLista: boolean,
+): { context: string; sources: Source[] } {
   const geral = preparos.meta.orientacoes_gerais
   const telefones = geral.telefones
 
@@ -47,21 +97,53 @@ function buildContext(matched: Exame[]): { context: string; sources: Source[] } 
 
   const sources: Source[] = []
 
+  // CAMADA LISTA — exames de raio-X que exigem preparo (quando solicitado).
+  const appendLista = () => {
+    if (!includeLista) return
+    const lista = raioxComPreparo()
+    if (lista.length === 0) return
+    context += `\n### CAMADA LISTA — EXAMES DE RAIO-X QUE EXIGEM PREPARO\n`
+    context += `INSTRUÇÃO: O usuário perguntou QUAIS exames de raio-X exigem preparo. Liste EXATAMENTE os exames abaixo (e nenhum outro), pelo NOME do exame, deixando claro que, em radiologia convencional, APENAS os exames de raio-X CONTRASTADOS exigem preparo — o raio-X simples não exige. Não inclua exames de outras modalidades (TC, RM, US etc.). NÃO exiba códigos/siglas internos.\n`
+    for (const e of lista) {
+      context += `- ${e.nome}\n`
+      sources.push({ nome: e.nome })
+    }
+    context += `Total: ${lista.length} exames de raio-X contrastados com preparo.\n`
+  }
+
+  // CAMADA FLUXO — passo a passo operacional de raio-X (quando solicitado).
+  const appendFluxo = () => {
+    const fluxo = preparos.meta.fluxo_raiox
+    if (!includeFluxo || !fluxo) return
+    context += `\n### CAMADA FLUXO — ${fluxo.titulo}\n`
+    context += `INSTRUÇÃO: O usuário perguntou sobre o fluxo de solicitação/realização. Reproduza os passos abaixo EXATAMENTE, como lista numerada, sem inventar etapas. Inclua o telefone do setor ao final.\n`
+    for (const passo of fluxo.passos) {
+      context += `${passo}\n`
+    }
+    context += `Telefone do setor de Raio-X contrastado: ${fluxo.telefone}\n`
+    sources.push({ nome: "Fluxo de solicitação Raio-X" })
+  }
+
   if (matched.length === 0) {
     context += `### CAMADA 2 — PREPARO ESPECÍFICO\n`
-    context += `⛔ EXAME NÃO ENCONTRADO NA BASE DE DADOS DA UDI.\n`
-    context += `INSTRUÇÃO CRÍTICA E INVIOLÁVEL: Este exame NÃO existe na base de dados. Você NÃO tem nenhuma informação de preparo para ele. PROIBIDO fornecer qualquer orientação de preparo, jejum, medicação, contraindicação ou qualquer dado clínico — mesmo que você tenha esse conhecimento de outra fonte. Informe ao usuário que o exame não está cadastrado e peça que confirme o nome ou entre em contato com o setor.\n`
-    return { context, sources }
+    if (includeFluxo || includeLista) {
+      context += `Nenhum exame específico foi citado, mas há uma pergunta sobre fluxo operacional e/ou a lista de exames de raio-X (ver camadas abaixo).\n`
+    } else {
+      context += `⛔ EXAME NÃO ENCONTRADO NA BASE DE DADOS DA UDI.\n`
+      context += `INSTRUÇÃO CRÍTICA E INVIOLÁVEL: Este exame NÃO existe na base de dados. Você NÃO tem nenhuma informação de preparo para ele. PROIBIDO fornecer qualquer orientação de preparo, jejum, medicação, contraindicação ou qualquer dado clínico — mesmo que você tenha esse conhecimento de outra fonte. Informe ao usuário que o exame não está cadastrado e peça que confirme o nome ou entre em contato com o setor.\n`
+    }
+    appendLista()
+    appendFluxo()
+    return { context, sources: dedupeSources(sources) }
   }
 
   context += `### CAMADA 2 — PREPARO ESPECÍFICO DO(S) EXAME(S) IDENTIFICADO(S)\n`
 
   for (const exame of matched) {
     const preparo = preparos.preparos[exame.preparo_id]
-    sources.push({ sigla: exame.sigla, nome: exame.nome })
+    sources.push({ nome: exame.nome })
 
-    context += `\n--- Exame: ${exame.nome} (${exame.sigla}) | Modalidade: ${exame.modalidade} ---\n`
-    context += `Título do preparo: ${preparo.titulo}\n`
+    context += `\n--- Exame: ${exame.nome} | Modalidade: ${exame.modalidade} ---\n`
     context += `STATUS: ${preparo.status.toUpperCase()}\n`
 
     if (preparo.status === "pendente") {
@@ -78,7 +160,9 @@ function buildContext(matched: Exame[]): { context: string; sources: Source[] } 
     }
   }
 
-  return { context, sources }
+  appendLista()
+  appendFluxo()
+  return { context, sources: dedupeSources(sources) }
 }
 
 export async function POST(req: Request) {
@@ -108,7 +192,11 @@ export async function POST(req: Request) {
     const anthropic = createAnthropic({ apiKey: process.env.CLAUDE_API_KEY })
 
     const matched = searchExames(message, exames)
-    const { context, sources } = buildContext(matched)
+    const { context, sources } = buildContext(
+      matched,
+      wantsFluxoRaiox(message),
+      wantsListaRaiox(message),
+    )
 
     const system = `${SYSTEM_PROMPTS[profile] ?? SYSTEM_PROMPTS.patient}\n\n=== CONTEXTO ===\n${context}\n=== FIM DO CONTEXTO ===`
 

@@ -9,9 +9,9 @@
   },
   {
     "sigla": "TCABDC",
-    "nome": "TOMOGRAFIA DE ABDOME COM CONTRASTE",
-    "nome_usual": "TOMOGRAFIA DO ABDOME COM CONTRASTE",
-    "sinonimos": ["tc abdome contraste"],
+    "nome": "TOMOGRAFIA DE ABDOMÊN COM CONTRASTE",
+    "nome_usual": "TOMOGRAFIA DO ABDOMÊN COM CONTRASTE",
+    "sinonimos": ["tc abdômen contraste"],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
   },
@@ -25,19 +25,19 @@
   },
   {
     "sigla": "RMABDC",
-    "nome": "RESSONANCIA DE ABDOME COM CONTRASTE",
-    "nome_usual": "RESSONANCIA MAGNETICA DE ABDOME COM CONTRASTE",
-    "sinonimos": ["rm abdome contraste"],
+    "nome": "RESSONANCIA DE ABDOMÊN COM CONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DE ABDOMÊN COM CONTRASTE",
+    "sinonimos": ["rm abdômen contraste"],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
   },
   {
     "sigla": "USABD",
-    "nome": "ULTRASSONOGRAFIA DE ABDOME TOTAL",
-    "nome_usual": "US DE ABDOME TOTAL",
-    "sinonimos": ["eco abdominal", "us barriga"],
+    "nome": "ULTRASSONOGRAFIA DE ABDOMÊN TOTAL",
+    "nome_usual": "US DE ABDOMÊN TOTAL",
+    "sinonimos": ["eco abdominal", "us barriga", "ultrassom de abdomen", "ultrassom abdominal", "ultrassonografia de abdomen", "us abdomen", "ultrassom de abdômen"],
     "modalidade": "ultrassonografia",
-    "preparo_id": "us_abdome"
+    "preparo_id": "us_abdômen"
   },
   {
     "sigla": "USPELV",
@@ -78,6 +78,54 @@
     "sinonimos": ["enema baritado"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_enema_opaco_adulto"
+  },
+  {
+    "sigla": "RXENEMACR",
+    "nome": "ENEMA OPACO CRIANCA",
+    "nome_usual": "ENEMA OPACO INFANTIL",
+    "sinonimos": ["enema opaco crianca", "enema baritado infantil", "enema opaco pediatrico"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_enema_opaco_crianca"
+  },
+  {
+    "sigla": "RXESOFAGO",
+    "nome": "EXAME CONTRASTADO DE ESOFAGO",
+    "nome_usual": "RAIO X DE ESOFAGO",
+    "sinonimos": ["esofagograma", "eed", "raio x esofago", "esofago contrastado", "deglutograma"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_esofago"
+  },
+  {
+    "sigla": "RXUROEXC",
+    "nome": "UROGRAFIA EXCRETORA",
+    "nome_usual": "UROGRAFIA EXCRETORA",
+    "sinonimos": ["uro excretora", "pielografia", "urografia venosa", "urografia intravenosa"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_urografia_excretora"
+  },
+  {
+    "sigla": "RXUCMAD",
+    "nome": "URETROCISTOGRAFIA MICCIONAL ADULTO",
+    "nome_usual": "URETROCISTOGRAFIA MICCIONAL (ADULTO)",
+    "sinonimos": ["ucm adulto", "uretrocistografia", "cistografia miccional", "ucm"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_uretrocistografia_adulto"
+  },
+  {
+    "sigla": "RXTRANSITO",
+    "nome": "TRANSITO INTESTINAL",
+    "nome_usual": "TRANSITO INTESTINAL",
+    "sinonimos": ["transito delgado", "seriografia intestinal", "transito de delgado", "transito gastrointestinal"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_transito_intestinal"
+  },
+  {
+    "sigla": "RXUCMCR",
+    "nome": "URETROCISTOGRAFIA MICCIONAL CRIANCA",
+    "nome_usual": "URETROCISTOGRAFIA MICCIONAL (CRIANCA)",
+    "sinonimos": ["ucm crianca", "uretrocistografia infantil", "cistografia miccional pediatrica", "ucm pediatrico"],
+    "modalidade": "radiologia_convencional",
+    "preparo_id": "rx_uretrocistografia_crianca"
   },
   {
     "sigla": "MAM",

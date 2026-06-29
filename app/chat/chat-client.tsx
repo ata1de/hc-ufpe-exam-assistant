@@ -22,15 +22,15 @@ type DisplayMessage = ChatMessage & { sources?: Source[] }
 const SUGGESTIONS: Record<Profile, string[]> = {
   patient: [
     "Preciso de jejum para ressonância com contraste?",
-    "Como me preparo para tomografia do tórax?",
+    "Como me preparo para o ultrassom de abdômen?",
     "Quais documentos levo no dia do exame?",
-    "Preciso de acompanhante na mamografia?",
+    "Como devo me preparar para a mamografia?",
   ],
   professional: [
-    "Qual o protocolo de preparo para TC de abdome com contraste?",
-    "Quais as contraindicações para uso de contraste iodado?",
-    "Como solicitar exame via AGHU para paciente internado?",
-    "Quais exames exigem APAC para autorização?",
+    "Quais exames de raio-X exigem preparo?",
+    "Qual o fluxo de solicitação e realização de raio-X pelo AGHU?",
+    "Qual o preparo para ressonância de abdômen com contraste?",
+    "Qual o preparo da histerossalpingografia?",
   ],
 }
 
@@ -126,7 +126,7 @@ export function ChatClient() {
   }
 
   return (
-    <div className="flex flex-col h-svh bg-background">
+    <div className="flex flex-col h-svh overflow-hidden bg-background">
       {/* Header */}
       <header className="shrink-0 border-b border-border bg-card/85 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
