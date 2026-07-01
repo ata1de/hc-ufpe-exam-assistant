@@ -1,8 +1,8 @@
 [
   {
     "sigla": "AGIO",
-    "nome": "ANGIOTOMOGARFIA ARTERIAL DE ABDOMEN SUPERIOR COM CONTRASTE E SEM SEDACA",
-    "nome_usual": "ANGIOTOMOGARFIA ARTERIAL DE ABDOMEN SUPERIOR COM CONTRASTE E SEM SEDACA",
+    "nome": "ANGIOTOMOGRAFIA ARTERIAL DE ABDOMEN SUPERIOR COM CONTRASTE E SEM SEDACAO",
+    "nome_usual": "ANGIOTOMOGRAFIA ARTERIAL DE ABDOMEN SUPERIOR COM CONTRASTE E SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
@@ -49,8 +49,8 @@
   },
   {
     "sigla": "TAB1",
-    "nome": "TOMOGRAFIA LINEARDE CONDUTOS AUDITIVOS INTERNOS",
-    "nome_usual": "TOMOOGRAFIA LINEAR DE CONDUTOS AUDITIVOS INTERNOS",
+    "nome": "TOMOGRAFIA LINEAR DE CONDUTOS AUDITIVOS INTERNOS",
+    "nome_usual": "TOMOGRAFIA LINEAR DE CONDUTOS AUDITIVOS INTERNOS",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -169,7 +169,7 @@
   },
   {
     "sigla": "TC2",
-    "nome": "TOMOGRAFIA DE CRANIO COM CONTRATE COM SEDACAO",
+    "nome": "TOMOGRAFIA DE CRANIO COM CONTRASTE COM SEDACAO",
     "nome_usual": "TOMOGRAFIA DE CRANIO ENCEFALO COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
@@ -258,7 +258,7 @@
   {
     "sigla": "TCACD",
     "nome": "TC DE ARTICULAÇÃO COXOFEMORAL DIREITA",
-    "nome_usual": "TOMOGRAFIAC DE ARTICULACAO COXOFEMORAL DIREITA",
+    "nome_usual": "TOMOGRAFIA DE ARTICULACAO COXOFEMORAL DIREITA",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -430,7 +430,7 @@
   {
     "sigla": "TCASS",
     "nome": "TOMOGRAFIA ABDOME SUPERIOR SEM CONTRASTE",
-    "nome_usual": "TOMOGRAFIA ABDOME SUPERIOR SEM CONTRASTE SEM SADACAO",
+    "nome_usual": "TOMOGRAFIA ABDOME SUPERIOR SEM CONTRASTE SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -560,7 +560,7 @@
   {
     "sigla": "TCBE",
     "nome": "TC DE BRAÇO ESQUERDO",
-    "nome_usual": "TOMOGRFIA DE BRACO ESQUERDO",
+    "nome_usual": "TOMOGRAFIA DE BRACO ESQUERDO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -576,7 +576,7 @@
   {
     "sigla": "TCC",
     "nome": "TOMOGRAFIA DO TORAX COM CONTRASTE",
-    "nome_usual": "TOMOGRAFIA DO TORAX COM CONTRASTE SEM SADACAO",
+    "nome_usual": "TOMOGRAFIA DO TORAX COM CONTRASTE SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
@@ -584,7 +584,7 @@
   {
     "sigla": "TCCAD",
     "nome": "TC DE CALCÂNEO DIREITO",
-    "nome_usual": "TOMOGRAFIAC DE CALCANEO DIREITO",
+    "nome_usual": "TOMOGRAFIA DE CALCANEO DIREITO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -758,7 +758,7 @@
   {
     "sigla": "TCCR5",
     "nome": "CRÂNIO - ÓRBITAS",
-    "nome_usual": "TOMOGRAFIAC DE CRANIO- ORBITAS",
+    "nome_usual": "TOMOGRAFIA DE CRANIO- ORBITAS",
     "sinonimos": [
       "TC CRÂNIO - ÓRBITAS"
     ],
@@ -1069,16 +1069,16 @@
   },
   {
     "sigla": "TCIA",
-    "nome": "ANGIOTOMOGARFIA ILIACAS ARTERIAL",
-    "nome_usual": "ANGIOTOMOGARFIA ILIACAS ARTERIAL",
+    "nome": "ANGIOTOMOGRAFIA ILIACAS ARTERIAL",
+    "nome_usual": "ANGIOTOMOGRAFIA ILIACAS ARTERIAL",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
   },
   {
     "sigla": "TCIV",
-    "nome": "ANGIOTOMOGARFIA ILIACAS VENOSO",
-    "nome_usual": "ANGIOTOMOGARFIA ILIACAS VENOSO",
+    "nome": "ANGIOTOMOGRAFIA ILIACAS VENOSO",
+    "nome_usual": "ANGIOTOMOGRAFIA ILIACAS VENOSO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
@@ -1262,7 +1262,7 @@
   {
     "sigla": "TCPE",
     "nome": "PESCOÇO",
-    "nome_usual": "TOMOGRAFIA DE PESCOCO ( CERVICAL) SEM CONTRASTE E SEM SADACAO",
+    "nome_usual": "TOMOGRAFIA DE PESCOCO ( CERVICAL) SEM CONTRASTE E SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -1397,7 +1397,7 @@
   },
   {
     "sigla": "TCTTC",
-    "nome": "TOMOGRAFIA DE COTOVELO DIREITO COM CONTRATE COM SEDACAO",
+    "nome": "TOMOGRAFIA DE COTOVELO DIREITO COM CONTRASTE COM SEDACAO",
     "nome_usual": "TOMOGRAFIA COTOVELO DIREITO COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
@@ -1471,11 +1471,11 @@
   },
   {
     "sigla": "TCXEC",
-    "nome": "TOMOGRAFIA DE COXA ESQUERDA COM COSTRASTE",
-    "nome_usual": "TOMOGRAFIA DE COXA ESQUERDA COM COSTRASTE",
+    "nome": "TOMOGRAFIA DE COXA ESQUERDA COM CONTRASTE",
+    "nome_usual": "TOMOGRAFIA DE COXA ESQUERDA COM CONTRASTE",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
-    "preparo_id": "tc_simples"
+    "preparo_id": "tc_contraste"
   },
   {
     "sigla": "TCXES",
@@ -1487,8 +1487,8 @@
   },
   {
     "sigla": "TEC",
-    "nome": "TOMOGRAFIA DE ESTERNO COM CONTRATE",
-    "nome_usual": "TOMOGRAFIA DE ESTERNO COM CONTRATE",
+    "nome": "TOMOGRAFIA DE ESTERNO COM CONTRASTE",
+    "nome_usual": "TOMOGRAFIA DE ESTERNO COM CONTRASTE",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
@@ -1751,16 +1751,16 @@
   },
   {
     "sigla": "TLOCS",
-    "nome": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS COM CONTRATE COM SEDACAO",
-    "nome_usual": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS COM CONTRATE COM SEDACAO",
+    "nome": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS COM CONTRASTE COM SEDACAO",
+    "nome_usual": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
   },
   {
     "sigla": "TLOSC",
-    "nome": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS SEM CONTRATE COM SEDACAO",
-    "nome_usual": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS SEM CONTRATE COM SEDACAO",
+    "nome": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS SEM CONTRASTE COM SEDACAO",
+    "nome_usual": "TOMOGRAFIA LINEAR DE OSSOS EM DOIS PLANOS SEM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -2008,7 +2008,7 @@
   {
     "sigla": "TPHEC",
     "nome": "TOMOGRAFIA DE PUNHO ESQUERDO COM CONTRASTE",
-    "nome_usual": "TOMOGRAFIA DE PUNHO ESQUERDO COM CONTRASTE SEM SADACAO",
+    "nome_usual": "TOMOGRAFIA DE PUNHO ESQUERDO COM CONTRASTE SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
@@ -2063,8 +2063,8 @@
   },
   {
     "sigla": "TRXSC",
-    "nome": "TOMOGRADIA DO TORAX SEM CONTRASTE COM SEDACAO",
-    "nome_usual": "TOMOGRADIA DO TORAX SEM CONTRASTE COM SEDACAO",
+    "nome": "TOMOGRAFIA DO TORAX SEM CONTRASTE COM SEDACAO",
+    "nome_usual": "TOMOGRAFIA DO TORAX SEM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -2103,7 +2103,7 @@
   },
   {
     "sigla": "TZDCS",
-    "nome": "TOMOGRAFIA DE TORNOZELO DIREITO COM CONTRASTE COMSEDACAO",
+    "nome": "TOMOGRAFIA DE TORNOZELO DIREITO COM CONTRASTE COM SEDACAO",
     "nome_usual": "TOMOGRAFIA DE TORNOZELO DIREITO COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "tomografia_computadorizada",
@@ -2127,8 +2127,8 @@
   },
   {
     "sigla": "A3",
-    "nome": "RESSONANCIA DE PUNHO ESQUERDO SEM CONTRARE E SEM SEDACAO",
-    "nome_usual": "RESSONANCIA DE PUNHO ESQUERDO SEM CONTRARE E SEM SEDACAO",
+    "nome": "RESSONANCIA DE PUNHO ESQUERDO SEM CONTRASTE E SEM SEDACAO",
+    "nome_usual": "RESSONANCIA DE PUNHO ESQUERDO SEM CONTRASTE E SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -2191,8 +2191,8 @@
   },
   {
     "sigla": "CD2",
-    "nome": "RESSONANCIA DA COXA ESQUERDA SEM CONTRATE E SEM SEDACAO",
-    "nome_usual": "RESSONANCIA DA COXA ESQUERDA SEM CONTRATE E SEM SEDACAO",
+    "nome": "RESSONANCIA DA COXA ESQUERDA SEM CONTRASTE E SEM SEDACAO",
+    "nome_usual": "RESSONANCIA DA COXA ESQUERDA SEM CONTRASTE E SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -2223,8 +2223,8 @@
   },
   {
     "sigla": "KX2",
-    "nome": "RESSONANCIA DE COXA DIREITA COM CONTRASTE COM SADACAO",
-    "nome_usual": "RESSONANCIA DE COXA DIREITA COM CONTRASTE COM SADACAO",
+    "nome": "RESSONANCIA DE COXA DIREITA COM CONTRASTE COM SEDACAO",
+    "nome_usual": "RESSONANCIA DE COXA DIREITA COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
@@ -2279,8 +2279,8 @@
   },
   {
     "sigla": "RAC",
-    "nome": "ANGIORESSONANCIA MAGNÉTICA ARTERIAL CEREBRALCOM CONTRASTE",
-    "nome_usual": "ANGIORESSONANCIA MAGNETICA ARTERIAL CEREBRALCOM CONTRASTE SEM SEDACAO",
+    "nome": "ANGIORESSONANCIA MAGNÉTICA ARTERIAL CEREBRAL COM CONTRASTE",
+    "nome_usual": "ANGIORESSONANCIA MAGNETICA ARTERIAL CEREBRAL COM CONTRASTE SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
@@ -2328,7 +2328,7 @@
   {
     "sigla": "RMABI",
     "nome": "RESSONÂNCIA MAGNÉTICA ABDÔMEN INFERIOR",
-    "nome_usual": "RESSONANCIA MAGNETICA DE ABDOMEN INFERIOR SEM CONTRASTE SEM SADACAO",
+    "nome_usual": "RESSONANCIA MAGNETICA DE ABDOMEN INFERIOR SEM CONTRASTE SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -2336,7 +2336,7 @@
   {
     "sigla": "RMABS",
     "nome": "RESSONÂNCIA MAGNÉTICA ABDÔMEN SUPERIOR",
-    "nome_usual": "RESSONANCIA MAGNETICA ABDOMEN SUPERIOR SEM CONTRASTE SEM SADACAO",
+    "nome_usual": "RESSONANCIA MAGNETICA ABDOMEN SUPERIOR SEM CONTRASTE SEM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -2359,8 +2359,8 @@
   },
   {
     "sigla": "RMAI",
-    "nome": "RESSONANCIA MAGNETICA DE ABOMEN INFERIOR SEM CONTRASTE",
-    "nome_usual": "RESSONANCIA MAGNETICA DE ABOMEN INFERIOR SEM CONTRASTE",
+    "nome": "RESSONANCIA MAGNETICA DE ABDOMEN INFERIOR SEM CONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DE ABDOMEN INFERIOR SEM CONTRASTE",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -2759,8 +2759,8 @@
   },
   {
     "sigla": "RMCOC",
-    "nome": "RESSONANCIA MEGNETICA DE COLUNA SACRO COCCIGEA",
-    "nome_usual": "RESSONANCIA MEGNETICA DE COLUNA SACRO COCCIGEA SEM CONTRASTE",
+    "nome": "RESSONANCIA MAGNETICA DE COLUNA SACRO COCCIGEA",
+    "nome_usual": "RESSONANCIA MAGNETICA DE COLUNA SACRO COCCIGEA SEM CONTRASTE",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -2992,7 +2992,7 @@
   {
     "sigla": "RMJOE",
     "nome": "RESSONÂNCIA MAGNÉTICA DO JOELHO ESQUERDO",
-    "nome_usual": "RESSONANCIA MAGNETICA DE JOELHO ESQUERDO SEMC ONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DE JOELHO ESQUERDO SEM CONTRASTE",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -3159,7 +3159,7 @@
   },
   {
     "sigla": "RMPT",
-    "nome": "RESSONANCIA DE PROSTATA COM CONTRASTE COM SADACAO",
+    "nome": "RESSONANCIA DE PROSTATA COM CONTRASTE COM SEDACAO",
     "nome_usual": "RESSONANCIA DE PROSTATA COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
@@ -3487,16 +3487,16 @@
   },
   {
     "sigla": "RMSVB",
-    "nome": "RESSONANCIA MAGNETICA DE VIAS BILIARES COM SEDECAO E SEM CONTRASTE",
-    "nome_usual": "RESSONANCIA MAGNETICA DE VIAS BILIARES COM SEDECAO E SEM CONTRASTE",
+    "nome": "RESSONANCIA MAGNETICA DE VIAS BILIARES COM SEDACAO E SEM CONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DE VIAS BILIARES COM SEDACAO E SEM CONTRASTE",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
   },
   {
     "sigla": "RMSVE",
-    "nome": "RESSONANCIA MAGNETICA DO COTOVELO DIREITO COM SEDECAO E SEM CONTRASTE",
-    "nome_usual": "RESSONANCIA MAGNETICA DO COTOVELO DIREITO COM SEDECAO E SEM CONTRASTE",
+    "nome": "RESSONANCIA MAGNETICA DO COTOVELO DIREITO COM SEDACAO E SEM CONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DO COTOVELO DIREITO COM SEDACAO E SEM CONTRASTE",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -3511,8 +3511,8 @@
   },
   {
     "sigla": "RMTO",
-    "nome": "RESSONANCIA MAGNETICA DE MASTOIDE COM SADACAO COM CONTRASTE",
-    "nome_usual": "RESSONANCIA MAGNETICA DE MASTOIDE COM SADACAO COM CONTRASTE",
+    "nome": "RESSONANCIA MAGNETICA DE MASTOIDE COM SEDACAO COM CONTRASTE",
+    "nome_usual": "RESSONANCIA MAGNETICA DE MASTOIDE COM SEDACAO COM CONTRASTE",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
@@ -3607,8 +3607,8 @@
   },
   {
     "sigla": "RS2",
-    "nome": "RESSONANCIA DE PE ESQUERDO COM CONTRASTE COM SADACAO",
-    "nome_usual": "RESSONANCIA DE PE ESQUERDO COM CONTRASTE COM SADACAO",
+    "nome": "RESSONANCIA DE PE ESQUERDO COM CONTRASTE COM SEDACAO",
+    "nome_usual": "RESSONANCIA DE PE ESQUERDO COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
@@ -3648,7 +3648,7 @@
   {
     "sigla": "RTZ2",
     "nome": "RESSONANCIA DE TORNOZELO ESQUERDO COM CONTRASTE COM SEDACAO",
-    "nome_usual": "RESSONANCIA DE TORNOZELO ESQUERDO COM CONTRASTE COM SEDACA",
+    "nome_usual": "RESSONANCIA DE TORNOZELO ESQUERDO COM CONTRASTE COM SEDACAO",
     "sinonimos": [],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
@@ -3672,7 +3672,7 @@
   {
     "sigla": "BPGUS",
     "nome": "BIÓPSIA DE PRÓSTATA GUIADA POR ULTRASSONOGRAFIA",
-    "nome_usual": "BIOPSIA DE PROSTATA GUIADA POR ULTRASSOGRAFIA",
+    "nome_usual": "BIOPSIA DE PROSTATA GUIADA POR ULTRASSONOGRAFIA",
     "sinonimos": [],
     "modalidade": "ultrassonografia",
     "preparo_id": "us_pelvica_vias_urinarias"
@@ -3780,7 +3780,7 @@
   {
     "sigla": "USABD",
     "nome": "ABDOMINAL SUPERIOR",
-    "nome_usual": "ULTRASSOGRAFIA ABDOMINAL SUPERIOR",
+    "nome_usual": "ULTRASSONOGRAFIA ABDOMINAL SUPERIOR",
     "sinonimos": [
       "USG ABDOMEN SUPERIOR"
     ],
@@ -3800,7 +3800,7 @@
   {
     "sigla": "USACD",
     "nome": "ARTICULAÇÃO PARTES MOLES - COTOVELO DIREITO",
-    "nome_usual": "ULTRASNOSGRAFIA ARTICULACAO PARTES MOLES - COTOVELO DIREITO",
+    "nome_usual": "ULTRASSONOGRAFIA ARTICULACAO PARTES MOLES - COTOVELO DIREITO",
     "sinonimos": [
       "USG COTOVELO DIREITO"
     ],
@@ -3840,7 +3840,7 @@
   {
     "sigla": "USAIE",
     "nome": "ARTICULAÇÃO PARTES MOLES - MEMBRO INFERIOR ESQUERDO",
-    "nome_usual": "ULTRSSONOGRAFIA ARTICULACAO PARTES MOLES - MEMBRO INFERIOR ESQUERDO",
+    "nome_usual": "ULTRASSONOGRAFIA ARTICULACAO PARTES MOLES - MEMBRO INFERIOR ESQUERDO",
     "sinonimos": [
       "USG MEMBRO INFERIOR ESQUERDO"
     ],
@@ -3850,7 +3850,7 @@
   {
     "sigla": "USAJD",
     "nome": "ARTICULAÇÃO PARTES MOLES - JOELHO DIREITO",
-    "nome_usual": "ULTRASSONOGRAFIA ATICULACAO PARTES MOLES - JOELHO DIREITO",
+    "nome_usual": "ULTRASSONOGRAFIA ARTICULACAO PARTES MOLES - JOELHO DIREITO",
     "sinonimos": [
       "USG JOELHO DIREITO"
     ],
@@ -3880,7 +3880,7 @@
   {
     "sigla": "USAME",
     "nome": "ECO ARTICULAÇÃO PARTES MOLES - MÃO ESQUERDA",
-    "nome_usual": "ULTRASSONAGRAFIA ARTICULACAO PARTES MOLES - MAO ESQUERDA",
+    "nome_usual": "ULTRASSONOGRAFIA ARTICULACAO PARTES MOLES - MAO ESQUERDA",
     "sinonimos": [
       "USG MÃO ESQUERDA"
     ],
@@ -4147,7 +4147,7 @@
   {
     "sigla": "USCAA",
     "nome": "ABDÔMEN COM DOPPLER A CORES",
-    "nome_usual": "ULTRASSOGRAFIA DE ABDOMEN C/ DOPPLER A CORES",
+    "nome_usual": "ULTRASSONOGRAFIA DE ABDOMEN C/ DOPPLER A CORES",
     "sinonimos": [
       "DOPPLER ABDOMINAL"
     ],
@@ -4838,16 +4838,16 @@
   },
   {
     "sigla": "RXAL1",
-    "nome": "ARTICULAÇÃO COXO FEMORAL DIREITA (LEQUESNESEZE)",
-    "nome_usual": "RAIO X ARTICULACAO (LEQUESNESEZE) COXO FEMORAL DIREITA",
+    "nome": "ARTICULAÇÃO COXO FEMORAL DIREITA (LEQUESNE)",
+    "nome_usual": "RAIO X ARTICULACAO (LEQUESNE) COXO FEMORAL DIREITA",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
   },
   {
     "sigla": "RXAL2",
-    "nome": "ARTICULAÇÃO COXO FEMORAL ESQUERDA (LEQUESNESEZE)",
-    "nome_usual": "RAIO X ARTICULACAO (LEQUESNESEZE) COXO FEMORAL ESQUERDA",
+    "nome": "ARTICULAÇÃO COXO FEMORAL ESQUERDA (LEQUESNE)",
+    "nome_usual": "RAIO X ARTICULACAO (LEQUESNE) COXO FEMORAL ESQUERDA",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
@@ -4963,7 +4963,7 @@
   {
     "sigla": "RXBA5",
     "nome": "BACIA EM ORTOSTATISMO",
-    "nome_usual": "RAIO X BACIA EM ORTOSTATISMOAIO",
+    "nome_usual": "RAIO X BACIA EM ORTOSTATISMO",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
@@ -5203,7 +5203,7 @@
   {
     "sigla": "RXCLD",
     "nome": "CLAVÍCULA DIREITA (AP + ASCENDENTE)",
-    "nome_usual": "RAIO X CLAVICULA DIREITA (AP + ASCENDETE)",
+    "nome_usual": "RAIO X CLAVICULA DIREITA (AP + ASCENDENTE)",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
@@ -5815,7 +5815,7 @@
   {
     "sigla": "RXOMD",
     "nome": "OMBRO DIREITO (RE + RI + OUTLET VIEW)",
-    "nome_usual": "RAIO X OMBRO DIRIEITO (RE + RI + OUTLET VIEW)",
+    "nome_usual": "RAIO X OMBRO DIREITO (RE + RI + OUTLET VIEW)",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
@@ -5927,7 +5927,7 @@
   {
     "sigla": "RXPEM",
     "nome": "PENETRADO DE MEDIASTINO",
-    "nome_usual": "RAIO X DE MEDIASTINO (PA + PERFRIL)",
+    "nome_usual": "RAIO X DE MEDIASTINO (PA + PERFIL)",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
@@ -6015,14 +6015,14 @@
   {
     "sigla": "RXPN2",
     "nome": "PNEUMOARTROGRAFIA DE OMBRO ESQUERDO",
-    "nome_usual": "RAIO X PNEUMOATROGRAFIA DE OMBRO ESQUERDO",
+    "nome_usual": "RAIO X PNEUMOARTROGRAFIA DE OMBRO ESQUERDO",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
   },
   {
     "sigla": "RXPN3",
-    "nome": "PNEUMOATROGRAFIA DE JOELHO DIREITO",
+    "nome": "PNEUMOARTROGRAFIA DE JOELHO DIREITO",
     "nome_usual": "RAIO X PNEUMOARTROGRAFIA DE JOELHO DIREITO",
     "sinonimos": [],
     "modalidade": "radiologia_convencional",

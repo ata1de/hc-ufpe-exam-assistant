@@ -3,6 +3,13 @@ import { generateText } from "ai"
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
 import { searchExames, normalize } from "@/lib/search"
+import {
+  wantsAggregateCount,
+  wantsAggregateList,
+  buildAggregateContext,
+  buildListContext,
+} from "@/lib/aggregate"
+import { prettifyExamName } from "@/lib/exam-options"
 import { generateMockResponse } from "@/lib/mock-response"
 import type { ChatMessage, Exame, PreparosFile, Profile, Source } from "@/lib/types"
 
@@ -96,9 +103,12 @@ function dedupeSources(sources: Source[]): Source[] {
 }
 
 function buildContext(
+  query: string,
   matched: Exame[],
   includeFluxo: boolean,
   includeLista: boolean,
+  includeAggregate: boolean,
+  includeAggList: boolean,
   profile: Profile,
 ): { context: string; sources: Source[] } {
   const isPro = profile === "professional"
@@ -143,14 +153,38 @@ function buildContext(
     sources.push({ nome: "Fluxo de solicitação Raio-X" })
   }
 
+  // CAMADA AGREGAÇÃO — contagem sobre a base inteira (quando solicitado).
+  const appendAggregate = () => {
+    if (!includeAggregate) return
+    context += buildAggregateContext(query, exames, preparos)
+  }
+
+  // CAMADA LISTAGEM — lista filtrada da base, limitada (quando solicitado).
+  const appendAggList = () => {
+    if (!includeAggList) return
+    const { context: listCtx, matched: listed } = buildListContext(
+      query,
+      exames,
+      preparos,
+      profile,
+    )
+    context += listCtx
+    for (const e of listed) {
+      const nome = e.label_paciente ?? prettifyExamName(e.nome_usual)
+      sources.push(isPro ? { nome, sigla: e.sigla } : { nome })
+    }
+  }
+
   if (matched.length === 0) {
     context += `### CAMADA 2 — PREPARO ESPECÍFICO\n`
-    if (includeFluxo || includeLista) {
-      context += `Nenhum exame específico foi citado, mas há uma pergunta sobre fluxo operacional e/ou a lista de exames de raio-X (ver camadas abaixo).\n`
+    if (includeFluxo || includeLista || includeAggregate || includeAggList) {
+      context += `Nenhum exame específico foi citado, mas há uma pergunta sobre fluxo operacional, contagem/listagem da base ou a lista de exames de raio-X (ver camadas abaixo).\n`
     } else {
       context += `⛔ EXAME NÃO ENCONTRADO NA BASE DE DADOS DA UDI.\n`
       context += `INSTRUÇÃO CRÍTICA E INVIOLÁVEL: Este exame NÃO existe na base de dados. Você NÃO tem nenhuma informação de preparo para ele. PROIBIDO fornecer qualquer orientação de preparo, jejum, medicação, contraindicação ou qualquer dado clínico — mesmo que você tenha esse conhecimento de outra fonte. Informe ao usuário que o exame não está cadastrado e peça que confirme o nome ou entre em contato com o setor.\n`
     }
+    appendAggregate()
+    appendAggList()
     appendLista()
     appendFluxo()
     return { context, sources: dedupeSources(sources) }
@@ -181,6 +215,8 @@ function buildContext(
     }
   }
 
+  appendAggregate()
+  appendAggList()
   appendLista()
   appendFluxo()
   return { context, sources: dedupeSources(sources) }
@@ -214,11 +250,18 @@ export async function POST(req: Request) {
 
     const anthropic = createAnthropic({ apiKey: process.env.CLAUDE_API_KEY })
 
-    const matched = resolveExames(message, history)
+    const isAggregate = wantsAggregateCount(message)
+    const isAggList = wantsAggregateList(message)
+    // Perguntas de contagem/listagem da base não são sobre um exame específico;
+    // pular o match pontual evita uma CAMADA 2 com um exame casado por acaso.
+    const matched = isAggregate || isAggList ? [] : resolveExames(message, history)
     const { context, sources } = buildContext(
+      message,
       matched,
       wantsFluxoRaiox(message),
       wantsListaRaiox(message),
+      isAggregate,
+      isAggList,
       profile,
     )
 

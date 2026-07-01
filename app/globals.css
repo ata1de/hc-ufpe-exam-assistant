@@ -116,6 +116,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html,
+  body {
+    /* Altura fixa à viewport para o layout do chat (h-svh) preencher exatamente
+       e não empurrar o body. O overflow do root é controlado por rota (a home
+       usa min-h-svh e pode crescer). */
+    height: 100%;
+  }
   body {
     @apply bg-background text-foreground;
   }
