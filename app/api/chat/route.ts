@@ -32,6 +32,23 @@ const SYSTEM_PROMPTS: Record<Profile, string> = {
     "Use linguagem técnica e operacional.",
 }
 
+// Resolve o(s) exame(s) da conversa. Busca na mensagem atual; se ela não
+// identifica exame (ex.: follow-up "me explique os documentos para levar"),
+// reutiliza o contexto das últimas mensagens do usuário.
+function resolveExames(message: string, history: ChatMessage[]): Exame[] {
+  const direct = searchExames(message, exames)
+  if (direct.length > 0) return direct
+
+  const lastUser = history
+    .filter((m) => m.role === "user")
+    .slice(-3)
+    .map((m) => m.content)
+    .join(" ")
+
+  if (!lastUser) return []
+  return searchExames(`${lastUser} ${message}`, exames)
+}
+
 // Detecta perguntas sobre o fluxo operacional de raio-X (solicitação, AGHU, etc.)
 const FLUXO_RX_REGEX =
   /\bfluxo\b|\baghu\b|solicit|maqueir|tecnic|passo a passo|como pedir|como solicitar|pedir exame|realizacao do exame|in loco/
@@ -172,6 +189,7 @@ function buildContext(
 export async function POST(req: Request) {
   let fallbackMessage = ""
   let fallbackProfile: Profile = "patient"
+  let fallbackHistory: ChatMessage[] = []
   try {
     const body = (await req.json()) as {
       message: string
@@ -182,6 +200,7 @@ export async function POST(req: Request) {
     const { message, profile = "patient", history = [] } = body
     fallbackMessage = message
     fallbackProfile = profile
+    fallbackHistory = history
 
     if (!message || typeof message !== "string") {
       return Response.json({ error: "Mensagem inválida." }, { status: 400 })
@@ -189,13 +208,13 @@ export async function POST(req: Request) {
 
     if (!process.env.CLAUDE_API_KEY) {
       // Sem chave configurada: usa resposta determinística a partir da base.
-      const mock = generateMockResponse(message, profile)
+      const mock = generateMockResponse(message, profile, history)
       return Response.json({ reply: mock.reply, sources: mock.sources, mocked: true })
     }
 
     const anthropic = createAnthropic({ apiKey: process.env.CLAUDE_API_KEY })
 
-    const matched = searchExames(message, exames)
+    const matched = resolveExames(message, history)
     const { context, sources } = buildContext(
       matched,
       wantsFluxoRaiox(message),
@@ -225,7 +244,7 @@ export async function POST(req: Request) {
 
     // IA indisponível (saldo, autenticação, rede, etc.): responde a partir da base.
     if (fallbackMessage) {
-      const mock = generateMockResponse(fallbackMessage, fallbackProfile)
+      const mock = generateMockResponse(fallbackMessage, fallbackProfile, fallbackHistory)
       return Response.json({ reply: mock.reply, sources: mock.sources, mocked: true })
     }
     return Response.json(

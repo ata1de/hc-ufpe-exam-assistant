@@ -1,7 +1,7 @@
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
 import { searchExames, normalize } from "@/lib/search"
-import type { Exame, PreparosFile, Profile, Source } from "@/lib/types"
+import type { ChatMessage, Exame, PreparosFile, Profile, Source } from "@/lib/types"
 
 const exames = examesData as Exame[]
 const preparos = preparosData as PreparosFile
@@ -78,12 +78,26 @@ function fluxoReply(): { reply: string; sources: Source[] } | null {
  * respeitando as regras de segurança clínica do HC-UFPE.
  * Usada como fallback quando a IA não está disponível.
  */
+/** Resolve exame na mensagem; se follow-up sem exame, usa histórico recente. */
+function resolveExames(message: string, history: ChatMessage[]): Exame[] {
+  const direct = searchExames(message, exames)
+  if (direct.length > 0) return direct
+  const lastUser = history
+    .filter((m) => m.role === "user")
+    .slice(-3)
+    .map((m) => m.content)
+    .join(" ")
+  if (!lastUser) return []
+  return searchExames(`${lastUser} ${message}`, exames)
+}
+
 export function generateMockResponse(
   message: string,
   profile: Profile,
+  history: ChatMessage[] = [],
 ): { reply: string; sources: Source[] } {
   const geral = preparos.meta.orientacoes_gerais
-  const matched = searchExames(message, exames)
+  const matched = resolveExames(message, history)
   const fluxo = wantsFluxoRaiox(message) ? fluxoReply() : null
 
   // Pergunta-lista ("quais exames de raio-X exigem preparo?"): responde a lista.
