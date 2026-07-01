@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge"
 import { GuidedExamPicker } from "@/components/guided-exam-picker"
 import { ChatSidebar } from "@/components/chat-sidebar"
 import { useChatSessions } from "@/hooks/use-chat-sessions"
-import type { Profile, StoredMessage } from "@/lib/types"
+import type { Profile, Source, StoredMessage } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 type DisplayMessage = StoredMessage
@@ -52,6 +52,62 @@ const PROFILE_META: Record<
     icon: Stethoscope,
     badgeClass: "bg-professional-bg text-azure-deep border-transparent",
   },
+}
+
+type ChatRequest = {
+  message: string
+  profile: Profile
+  history: { role: StoredMessage["role"]; content: string }[]
+}
+
+// Erro de rede/conectividade: o fetch nem chegou ao servidor.
+class NetworkError extends Error {}
+
+const REQUEST_TIMEOUT_MS = 30_000
+const MAX_ATTEMPTS = 2
+
+async function postChatMessage(payload: ChatRequest) {
+  let lastNetworkError: unknown
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+    let res: Response
+    try {
+      res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      })
+    } catch (err) {
+      // "Failed to fetch" (offline, servidor fora, DNS) ou abort por timeout.
+      lastNetworkError = err
+      clearTimeout(timeout)
+      continue
+    } finally {
+      clearTimeout(timeout)
+    }
+
+    const data = await res.json().catch(() => null)
+    if (!res.ok) {
+      throw new Error(data?.error ?? "Erro ao processar a solicitação.")
+    }
+    return data as { reply: string; sources?: Source[] }
+  }
+
+  throw new NetworkError(String(lastNetworkError))
+}
+
+function describeChatError(err: unknown): string {
+  if (err instanceof NetworkError) {
+    return "Não consegui me conectar ao servidor. Verifique sua conexão com a internet e tente novamente."
+  }
+  if (err instanceof Error && err.message) {
+    return err.message
+  }
+  return "Desculpe, ocorreu um erro ao processar sua pergunta. Por favor, tente novamente em instantes."
 }
 
 export function ChatClient() {
@@ -130,17 +186,7 @@ export function ChatClient() {
     setIsLoading(true)
 
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed, profile, history }),
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data?.error ?? "Erro desconhecido")
-      }
+      const data = await postChatMessage({ message: trimmed, profile, history })
 
       commitMessages(
         [
@@ -150,16 +196,12 @@ export function ChatClient() {
         profile,
       )
     } catch (err) {
-      const detail =
-        err instanceof Error && err.message ? err.message : null
       commitMessages(
         [
           ...afterUser,
           {
             role: "assistant",
-            content:
-              detail ??
-              "Desculpe, ocorreu um erro ao processar sua pergunta. Por favor, tente novamente em instantes.",
+            content: describeChatError(err),
           },
         ],
         profile,
