@@ -93,7 +93,10 @@ function capitalize(s: string): string {
 
 /** `Como me preparo para <nome_usual em minúsculas>?` — resolve top-1 no searchExames. */
 export function buildQuery(e: Exame): string {
-  return `Como me preparo para ${e.nome_usual.toLowerCase()}?`
+  // Usa o nome curado (acentuado) na pergunta visível ao paciente.
+  // A busca (lib/search) normaliza acentos, então o match continua igual.
+  const nome = e.label_paciente ?? e.nome_usual.toLowerCase()
+  return `Como me preparo para ${nome}?`
 }
 
 function toExamOption(e: Exame): ExamOption {
