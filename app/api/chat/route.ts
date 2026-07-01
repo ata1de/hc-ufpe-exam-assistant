@@ -3,6 +3,7 @@ import { generateText } from "ai"
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
 import { searchExames, normalize } from "@/lib/search"
+import { stemQuery } from "@/lib/stem"
 import {
   wantsAggregateCount,
   wantsAggregateList,
@@ -61,7 +62,7 @@ const FLUXO_RX_REGEX =
   /\bfluxo\b|\baghu\b|solicit|maqueir|tecnic|passo a passo|como pedir|como solicitar|pedir exame|realizacao do exame|in loco/
 
 function wantsFluxoRaiox(query: string): boolean {
-  const q = normalize(query)
+  const q = stemQuery(normalize(query))
   const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia/.test(q)
   // Fluxo se cita raio-X + termo de fluxo, ou cita explicitamente AGHU/maqueiro.
   return (
@@ -72,7 +73,7 @@ function wantsFluxoRaiox(query: string): boolean {
 
 // Detecta perguntas que pedem a LISTA de exames de raio-X que exigem preparo.
 function wantsListaRaiox(query: string): boolean {
-  const q = normalize(query)
+  const q = stemQuery(normalize(query))
   const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia|contrastad/.test(q)
   const isListing =
     /\bquais\b|\bque\b|lista|listar|todos|quantos|relacao|exigem|precisam|necessitam|exige|precisa de preparo|tem preparo|com preparo/.test(

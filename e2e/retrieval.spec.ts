@@ -19,6 +19,23 @@ test.describe("recuperação e segurança de conteúdo", () => {
     expect(reply.toLowerCase()).toMatch(/n[aã]o est[aá]|n[aã]o.*base|confirme|contato|setor/)
   })
 
+  test("linguagem leiga resolve o exame (barriga → abdômen)", async ({ page }) => {
+    await openChat(page, "patient")
+    await ask(page, "preciso de jejum para ressonância da barriga?")
+    const reply = await waitForReply(page, 0)
+    // Deve resolver para um exame real (abdômen) e citar Fonte — não "não encontrado".
+    expect(reply.toLowerCase()).not.toMatch(/n[aã]o est[aá] na (minha|base)/)
+    await expect(page.getByText("Fonte", { exact: false }).first()).toBeVisible()
+  })
+
+  test("plural na listagem agregada funciona (ressonâncias)", async ({ page }) => {
+    await openChat(page, "patient")
+    await ask(page, "liste as ressonâncias que precisam de preparo")
+    const reply = await waitForReply(page, 0)
+    // Antes falhava no plural; agora deve listar/responder, não recusar.
+    expect(reply.toLowerCase()).not.toMatch(/n[aã]o est[aá] na (minha|base)/)
+  })
+
   test("perfil profissional expõe código AGHU", async ({ page }) => {
     await openChat(page, "professional")
     await ask(page, "Qual o código AGHU da tomografia de abdômen com contraste?")
