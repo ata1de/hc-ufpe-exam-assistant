@@ -11,6 +11,8 @@ export type Exame = {
   sigla: string
   nome: string
   nome_usual: string
+  /** Nome amigável ao paciente, com acentos e capitalização corretos. */
+  label_paciente?: string
   sinonimos: string[]
   modalidade: string
   preparo_id: string

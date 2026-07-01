@@ -100,7 +100,8 @@ function toExamOption(e: Exame): ExamOption {
   const status = preparos.preparos[e.preparo_id]?.status ?? "pendente"
   return {
     sigla: e.sigla,
-    label: prettifyExamName(e.nome_usual),
+    // Prefere o nome curado (com acentos). Fallback: prettify do nome cru.
+    label: e.label_paciente ?? prettifyExamName(e.nome_usual),
     query: buildQuery(e),
     status,
   }

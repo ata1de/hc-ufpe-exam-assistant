@@ -3,6 +3,7 @@
     "sigla": "TCTX",
     "nome": "TOMOGRAFIA DO TORAX SEM CONTRASTE",
     "nome_usual": "TOMOGRAFIA DO TORAX SEM CONTRASTE",
+    "label_paciente": "Tomografia do tórax sem contraste",
     "sinonimos": ["tc torax", "tomografia pulmao"],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_simples"
@@ -11,6 +12,7 @@
     "sigla": "TCABDC",
     "nome": "TOMOGRAFIA DE ABDOMÊN COM CONTRASTE",
     "nome_usual": "TOMOGRAFIA DO ABDOMÊN COM CONTRASTE",
+    "label_paciente": "Tomografia do abdômen com contraste",
     "sinonimos": ["tc abdômen contraste"],
     "modalidade": "tomografia_computadorizada",
     "preparo_id": "tc_contraste"
@@ -19,6 +21,7 @@
     "sigla": "RMCRA",
     "nome": "RESSONANCIA DE CRANIO",
     "nome_usual": "RESSONANCIA MAGNETICA DE CRANIO",
+    "label_paciente": "Ressonância magnética de crânio",
     "sinonimos": ["rm cerebro", "mri cabeca"],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_simples"
@@ -27,6 +30,7 @@
     "sigla": "RMABDC",
     "nome": "RESSONANCIA DE ABDOMÊN COM CONTRASTE",
     "nome_usual": "RESSONANCIA MAGNETICA DE ABDOMÊN COM CONTRASTE",
+    "label_paciente": "Ressonância magnética de abdômen com contraste",
     "sinonimos": ["rm abdômen contraste"],
     "modalidade": "ressonancia_magnetica",
     "preparo_id": "rm_contraste"
@@ -35,6 +39,7 @@
     "sigla": "USABD",
     "nome": "ULTRASSONOGRAFIA DE ABDOMÊN TOTAL",
     "nome_usual": "US DE ABDOMÊN TOTAL",
+    "label_paciente": "Ultrassom de abdômen total",
     "sinonimos": ["eco abdominal", "us barriga", "ultrassom de abdomen", "ultrassom abdominal", "ultrassonografia de abdomen", "us abdomen", "ultrassom de abdômen"],
     "modalidade": "ultrassonografia",
     "preparo_id": "us_abdômen"
@@ -43,6 +48,7 @@
     "sigla": "USPELV",
     "nome": "ULTRASSONOGRAFIA PELVICA",
     "nome_usual": "US PELVICA",
+    "label_paciente": "Ultrassom pélvico",
     "sinonimos": ["eco pelvica"],
     "modalidade": "ultrassonografia",
     "preparo_id": "us_pelvica_vias_urinarias"
@@ -51,6 +57,7 @@
     "sigla": "USOBS",
     "nome": "ULTRASSONOGRAFIA OBSTETRICA",
     "nome_usual": "US OBSTETRICA",
+    "label_paciente": "Ultrassom obstétrico",
     "sinonimos": ["eco gestacional"],
     "modalidade": "ultrassonografia",
     "preparo_id": "us_obstetrica"
@@ -59,6 +66,7 @@
     "sigla": "RXTX",
     "nome": "RAIO X DE TORAX",
     "nome_usual": "RX DE TORAX",
+    "label_paciente": "Raio-X de tórax",
     "sinonimos": ["raio x pulmao", "rx pulmao"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "radiologia_sem_preparo"
@@ -67,6 +75,7 @@
     "sigla": "RXHSG",
     "nome": "HISTEROSSALPINGOGRAFIA",
     "nome_usual": "HSG",
+    "label_paciente": "Histerossalpingografia (HSG)",
     "sinonimos": ["raio x utero"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_histerossalpingografia"
@@ -75,6 +84,7 @@
     "sigla": "RXENEMA",
     "nome": "ENEMA OPACO ADULTO",
     "nome_usual": "RAIO X ENEMA OPACO",
+    "label_paciente": "Enema opaco (adulto)",
     "sinonimos": ["enema baritado"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_enema_opaco_adulto"
@@ -83,6 +93,7 @@
     "sigla": "RXENEMACR",
     "nome": "ENEMA OPACO CRIANCA",
     "nome_usual": "ENEMA OPACO INFANTIL",
+    "label_paciente": "Enema opaco infantil",
     "sinonimos": ["enema opaco crianca", "enema baritado infantil", "enema opaco pediatrico"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_enema_opaco_crianca"
@@ -91,6 +102,7 @@
     "sigla": "RXESOFAGO",
     "nome": "EXAME CONTRASTADO DE ESOFAGO",
     "nome_usual": "RAIO X DE ESOFAGO",
+    "label_paciente": "Raio-X de esôfago",
     "sinonimos": ["esofagograma", "eed", "raio x esofago", "esofago contrastado", "deglutograma"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_esofago"
@@ -99,6 +111,7 @@
     "sigla": "RXUROEXC",
     "nome": "UROGRAFIA EXCRETORA",
     "nome_usual": "UROGRAFIA EXCRETORA",
+    "label_paciente": "Urografia excretora",
     "sinonimos": ["uro excretora", "pielografia", "urografia venosa", "urografia intravenosa"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_urografia_excretora"
@@ -107,6 +120,7 @@
     "sigla": "RXUCMAD",
     "nome": "URETROCISTOGRAFIA MICCIONAL ADULTO",
     "nome_usual": "URETROCISTOGRAFIA MICCIONAL (ADULTO)",
+    "label_paciente": "Uretrocistografia miccional (adulto)",
     "sinonimos": ["ucm adulto", "uretrocistografia", "cistografia miccional", "ucm"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_uretrocistografia_adulto"
@@ -115,6 +129,7 @@
     "sigla": "RXTRANSITO",
     "nome": "TRANSITO INTESTINAL",
     "nome_usual": "TRANSITO INTESTINAL",
+    "label_paciente": "Trânsito intestinal",
     "sinonimos": ["transito delgado", "seriografia intestinal", "transito de delgado", "transito gastrointestinal"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_transito_intestinal"
@@ -123,6 +138,7 @@
     "sigla": "RXUCMCR",
     "nome": "URETROCISTOGRAFIA MICCIONAL CRIANCA",
     "nome_usual": "URETROCISTOGRAFIA MICCIONAL (CRIANCA)",
+    "label_paciente": "Uretrocistografia miccional (criança)",
     "sinonimos": ["ucm crianca", "uretrocistografia infantil", "cistografia miccional pediatrica", "ucm pediatrico"],
     "modalidade": "radiologia_convencional",
     "preparo_id": "rx_uretrocistografia_crianca"
@@ -131,6 +147,7 @@
     "sigla": "MAM",
     "nome": "MAMOGRAFIA BILATERAL",
     "nome_usual": "MAMOGRAFIA",
+    "label_paciente": "Mamografia",
     "sinonimos": ["raio x mama"],
     "modalidade": "mamografia",
     "preparo_id": "mamografia"
@@ -139,6 +156,7 @@
     "sigla": "DMO",
     "nome": "DENSITOMETRIA OSSEA",
     "nome_usual": "DENSITOMETRIA OSSEA",
+    "label_paciente": "Densitometria óssea",
     "sinonimos": ["dexa", "dmo"],
     "modalidade": "densitometria_ossea",
     "preparo_id": "densitometria_ossea"
@@ -147,6 +165,7 @@
     "sigla": "CINTOSS",
     "nome": "CINTILOGRAFIA OSSEA",
     "nome_usual": "CINTILOGRAFIA OSSEA",
+    "label_paciente": "Cintilografia óssea",
     "sinonimos": ["medicina nuclear ossea"],
     "modalidade": "medicina_nuclear",
     "preparo_id": "medicina_nuclear_generico"
