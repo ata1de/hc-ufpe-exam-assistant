@@ -45,3 +45,16 @@ export type PreparosFile = {
 export type Source = {
   nome: string
 }
+
+export type StoredMessage = ChatMessage & {
+  sources?: Source[]
+}
+
+export type ChatSession = {
+  id: string
+  profile: Profile
+  title: string
+  messages: StoredMessage[]
+  createdAt: number
+  updatedAt: number
+}

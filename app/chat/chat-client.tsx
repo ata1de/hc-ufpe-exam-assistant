@@ -10,15 +10,18 @@ import {
   User,
   Info,
   FileText,
+  PanelLeft,
 } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { GuidedExamPicker } from "@/components/guided-exam-picker"
-import type { ChatMessage, Profile, Source } from "@/lib/types"
+import { ChatSidebar } from "@/components/chat-sidebar"
+import { useChatSessions } from "@/hooks/use-chat-sessions"
+import type { Profile, StoredMessage } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
-type DisplayMessage = ChatMessage & { sources?: Source[] }
+type DisplayMessage = StoredMessage
 
 const SUGGESTIONS: Record<Profile, string[]> = {
   patient: [
@@ -57,10 +60,30 @@ export function ChatClient() {
   const profile: Profile =
     searchParams.get("profile") === "professional" ? "professional" : "patient"
 
-  const [messages, setMessages] = useState<DisplayMessage[]>([])
+  const {
+    sessions,
+    activeId,
+    activeMessages,
+    hydrated,
+    newChat,
+    selectChat,
+    deleteChat,
+    commitMessages,
+  } = useChatSessions()
+
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  // Trava de envio em andamento — bloqueia envios em sequência no mesmo tick,
+  // antes de o estado isLoading ser aplicado (sugestões/picker não são desativados).
+  const sendingRef = useRef(false)
+
+  // Mensagens derivam da sessão ativa (fonte única de verdade).
+  const messages = activeMessages
+
+  // Cada fluxo (paciente/profissional) vê apenas as próprias conversas.
+  const visibleSessions = sessions.filter((s) => s.profile === profile)
 
   const meta = PROFILE_META[profile]
   const ProfileIcon = meta.icon
@@ -77,13 +100,32 @@ export function ChatClient() {
     router.replace(`/chat?profile=${next}`)
   }
 
+  function handleNewChat() {
+    newChat()
+    setSidebarOpen(false)
+  }
+
+  function handleSelectChat(id: string) {
+    selectChat(id)
+    setSidebarOpen(false)
+    // Continua a conversa no seu próprio perfil para manter o tom das respostas.
+    const selected = sessions.find((s) => s.id === id)
+    if (selected && selected.profile !== profile) {
+      router.replace(`/chat?profile=${selected.profile}`)
+    }
+  }
+
   async function sendMessage(text: string) {
     const trimmed = text.trim()
-    if (!trimmed || isLoading) return
+    if (!trimmed || sendingRef.current) return
+    sendingRef.current = true
 
     const history = messages.map(({ role, content }) => ({ role, content }))
-    const userMsg: DisplayMessage = { role: "user", content: trimmed }
-    setMessages((prev) => [...prev, userMsg])
+    const afterUser: DisplayMessage[] = [
+      ...messages,
+      { role: "user", content: trimmed },
+    ]
+    commitMessages(afterUser, profile)
     setInput("")
     setIsLoading(true)
 
@@ -100,24 +142,31 @@ export function ChatClient() {
         throw new Error(data?.error ?? "Erro desconhecido")
       }
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.reply, sources: data.sources },
-      ])
+      commitMessages(
+        [
+          ...afterUser,
+          { role: "assistant", content: data.reply, sources: data.sources },
+        ],
+        profile,
+      )
     } catch (err) {
       const detail =
         err instanceof Error && err.message ? err.message : null
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            detail ??
-            "Desculpe, ocorreu um erro ao processar sua pergunta. Por favor, tente novamente em instantes.",
-        },
-      ])
+      commitMessages(
+        [
+          ...afterUser,
+          {
+            role: "assistant",
+            content:
+              detail ??
+              "Desculpe, ocorreu um erro ao processar sua pergunta. Por favor, tente novamente em instantes.",
+          },
+        ],
+        profile,
+      )
     } finally {
       setIsLoading(false)
+      sendingRef.current = false
     }
   }
 
@@ -127,55 +176,74 @@ export function ChatClient() {
   }
 
   return (
-    <div className="flex flex-col h-svh overflow-hidden bg-background">
-      {/* Header */}
-      <header className="shrink-0 border-b border-border bg-card/85 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <Link
-              href="/"
-              className="flex size-9 shrink-0 items-center justify-center rounded-lg text-steel transition-colors hover:bg-mist hover:text-azure-deep"
-              aria-label="Voltar ao início"
-            >
-              <ArrowLeft className="size-5" />
-            </Link>
-            <div className="min-w-0">
-              <h1 className="font-serif text-lg leading-tight text-ink truncate">
-                Assistente UDI HC-UFPE
-              </h1>
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-steel">
-                Preparo de exames de imagem
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={switchProfile}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-              meta.badgeClass,
-            )}
-            aria-label={`Perfil ativo: ${meta.label}. Clique para trocar.`}
-          >
-            <ProfileIcon className="size-3.5" aria-hidden="true" />
-            {meta.label}
-          </button>
-        </div>
-      </header>
+    <div className="flex h-svh overflow-hidden bg-background">
+      <ChatSidebar
+        sessions={visibleSessions}
+        activeId={activeId}
+        open={sidebarOpen}
+        onOpenChange={setSidebarOpen}
+        onNewChat={handleNewChat}
+        onSelect={handleSelectChat}
+        onDelete={deleteChat}
+      />
 
-      {/* Warning banner */}
-      <div className="shrink-0 border-b border-border bg-mist/60">
-        <div className="mx-auto flex max-w-2xl items-start gap-2 px-4 py-2.5">
-          <Info
-            className="mt-0.5 size-4 shrink-0 text-azure"
-            aria-hidden="true"
-          />
-          <p className="text-xs leading-relaxed text-azure-deep">
-            Orientações de apoio com base na documentação oficial da
-            UDI/HC-UFPE. Não substitui a orientação da equipe de saúde.
-          </p>
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        {/* Header */}
+        <header className="shrink-0 border-b border-border bg-card/85 backdrop-blur">
+          <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
+            <div className="flex min-w-0 items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(true)}
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg text-steel transition-colors hover:bg-mist hover:text-azure-deep md:hidden"
+                aria-label="Abrir histórico de conversas"
+              >
+                <PanelLeft className="size-5" />
+              </button>
+              <Link
+                href="/"
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg text-steel transition-colors hover:bg-mist hover:text-azure-deep"
+                aria-label="Voltar ao início"
+              >
+                <ArrowLeft className="size-5" />
+              </Link>
+              <div className="min-w-0">
+                <h1 className="truncate font-serif text-lg leading-tight text-ink">
+                  Assistente UDI HC-UFPE
+                </h1>
+                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-steel">
+                  Preparo de exames de imagem
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={switchProfile}
+              className={cn(
+                "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                meta.badgeClass,
+              )}
+              aria-label={`Perfil ativo: ${meta.label}. Clique para trocar.`}
+            >
+              <ProfileIcon className="size-3.5" aria-hidden="true" />
+              {meta.label}
+            </button>
+          </div>
+        </header>
+
+        {/* Warning banner */}
+        <div className="shrink-0 border-b border-border bg-mist/60">
+          <div className="flex items-start gap-2.5 px-5 py-3 sm:px-8">
+            <Info
+              className="mt-0.5 size-4 shrink-0 text-azure"
+              aria-hidden="true"
+            />
+            <p className="max-w-3xl text-xs leading-relaxed text-azure-deep">
+              Orientações de apoio com base na documentação oficial da
+              UDI/HC-UFPE. Não substitui a orientação da equipe de saúde.
+            </p>
+          </div>
         </div>
-      </div>
 
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
@@ -251,6 +319,7 @@ export function ChatClient() {
             <Send className="size-5" />
           </Button>
         </form>
+        </div>
       </div>
     </div>
   )
