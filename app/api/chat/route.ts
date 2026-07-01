@@ -28,7 +28,7 @@ const SYSTEM_PROMPTS: Record<Profile, string> = {
     "Se o CONTEXTO indicar STATUS PENDENTE, informe apenas que o preparo específico não está cadastrado e indique o setor pelo contato que aparece literalmente no CONTEXTO. " +
     "NUNCA mencione números de telefone, endereços ou contatos que não estejam escritos literalmente no CONTEXTO. Copie os números exatamente como aparecem no CONTEXTO, sem reformatar. " +
     "NUNCA invente dosagens, horários, medicamentos, protocolos ou qualquer dado que não esteja no CONTEXTO. " +
-    "NUNCA exiba códigos, siglas internas (ex.: RXHSG, TCABDC), identificadores de preparo ou rótulos técnicos internos do sistema. Refira-se aos exames apenas pelo NOME. " +
+    "CÓDIGO AGHU: para cada exame identificado, informe o código AGHU (sigla) EXATAMENTE como aparece no campo 'Código AGHU' do CONTEXTO, no formato 'Nome do exame (código: XXXX)'. Se o usuário informar um código, confirme o nome do exame correspondente e repita o código. NUNCA invente um código que não esteja escrito no CONTEXTO. Não exiba identificadores de preparo internos (ex.: tc_contraste). " +
     "Use linguagem técnica e operacional.",
 }
 
@@ -82,7 +82,9 @@ function buildContext(
   matched: Exame[],
   includeFluxo: boolean,
   includeLista: boolean,
+  profile: Profile,
 ): { context: string; sources: Source[] } {
+  const isPro = profile === "professional"
   const geral = preparos.meta.orientacoes_gerais
   const telefones = geral.telefones
 
@@ -103,10 +105,10 @@ function buildContext(
     const lista = raioxComPreparo()
     if (lista.length === 0) return
     context += `\n### CAMADA LISTA — EXAMES DE RAIO-X QUE EXIGEM PREPARO\n`
-    context += `INSTRUÇÃO: O usuário perguntou QUAIS exames de raio-X exigem preparo. Liste EXATAMENTE os exames abaixo (e nenhum outro), pelo NOME do exame, deixando claro que, em radiologia convencional, APENAS os exames de raio-X CONTRASTADOS exigem preparo — o raio-X simples não exige. Não inclua exames de outras modalidades (TC, RM, US etc.). NÃO exiba códigos/siglas internos.\n`
+    context += `INSTRUÇÃO: O usuário perguntou QUAIS exames de raio-X exigem preparo. Liste EXATAMENTE os exames abaixo (e nenhum outro), pelo NOME do exame, deixando claro que, em radiologia convencional, APENAS os exames de raio-X CONTRASTADOS exigem preparo — o raio-X simples não exige. Não inclua exames de outras modalidades (TC, RM, US etc.).${isPro ? "" : " NÃO exiba códigos/siglas internos."}\n`
     for (const e of lista) {
-      context += `- ${e.nome}\n`
-      sources.push({ nome: e.nome })
+      context += isPro ? `- ${e.nome} (código: ${e.sigla})\n` : `- ${e.nome}\n`
+      sources.push(isPro ? { nome: e.nome, sigla: e.sigla } : { nome: e.nome })
     }
     context += `Total: ${lista.length} exames de raio-X contrastados com preparo.\n`
   }
@@ -141,9 +143,11 @@ function buildContext(
 
   for (const exame of matched) {
     const preparo = preparos.preparos[exame.preparo_id]
-    sources.push({ nome: exame.nome })
+    sources.push(isPro ? { nome: exame.nome, sigla: exame.sigla } : { nome: exame.nome })
 
-    context += `\n--- Exame: ${exame.nome} | Modalidade: ${exame.modalidade} ---\n`
+    context += isPro
+      ? `\n--- Exame: ${exame.nome} | Código AGHU: ${exame.sigla} | Modalidade: ${exame.modalidade} ---\n`
+      : `\n--- Exame: ${exame.nome} | Modalidade: ${exame.modalidade} ---\n`
     context += `STATUS: ${preparo.status.toUpperCase()}\n`
 
     if (preparo.status === "pendente") {
@@ -196,6 +200,7 @@ export async function POST(req: Request) {
       matched,
       wantsFluxoRaiox(message),
       wantsListaRaiox(message),
+      profile,
     )
 
     const system = `${SYSTEM_PROMPTS[profile] ?? SYSTEM_PROMPTS.patient}\n\n=== CONTEXTO ===\n${context}\n=== FIM DO CONTEXTO ===`

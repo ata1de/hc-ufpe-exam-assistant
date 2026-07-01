@@ -52,14 +52,114 @@ export function modalidadeLabel(m: string): string {
 }
 
 // Siglas/acrônimos que devem permanecer em CAIXA ALTA no rótulo do exame.
-const KEEP_UPPER = new Set(["US", "RX", "TC", "RM", "HSG", "HC", "UFPE", "SUS"])
+const KEEP_UPPER = new Set(["US", "RX", "TC", "RM", "HSG", "HC", "UFPE", "SUS", "ATM"])
 // Conectivos que permanecem em minúscula (exceto na 1ª palavra).
-const KEEP_LOWER = new Set(["de", "da", "do", "das", "dos", "com", "sem", "e", "para"])
+const KEEP_LOWER = new Set(["de", "da", "do", "das", "dos", "com", "sem", "e", "para", "ou", "por", "em"])
+
+// Restauração de acentos: os nomes na base vêm em CAIXA ALTA e SEM acentos
+// (ex.: "ABDOMEN", "CRANIO", "RESSONANCIA"). Mapa palavra-sem-acento → forma
+// acentuada, aplicado no rótulo do paciente. Chave em minúsculas, sem acento.
+// Só termos frequentes/inequívocos — typos raros ficam para curadoria.
+const ACCENTS: Record<string, string> = {
+  ressonancia: "ressonância",
+  magnetica: "magnética",
+  angioressonancia: "angiorressonância",
+  colangioressonancia: "colangiorressonância",
+  sedacao: "sedação",
+  abdomen: "abdômen",
+  abdome: "abdômen",
+  abdominal: "abdominal",
+  cranio: "crânio",
+  torax: "tórax",
+  toracica: "torácica",
+  toraco: "tóraco",
+  pe: "pé",
+  mao: "mão",
+  maos: "mãos",
+  articulacao: "articulação",
+  articulacoes: "articulações",
+  coxo: "coxo",
+  femural: "femoral",
+  femurais: "femorais",
+  pescoco: "pescoço",
+  orgaos: "órgãos",
+  regiao: "região",
+  braco: "braço",
+  antebraco: "antebraço",
+  projecao: "projeção",
+  obliqua: "oblíqua",
+  obliquas: "oblíquas",
+  obliquo: "oblíquo",
+  obliquos: "oblíquos",
+  prostata: "próstata",
+  calcaneo: "calcâneo",
+  biopsia: "biópsia",
+  pelvica: "pélvica",
+  pelvis: "pélvis",
+  cardiaca: "cardíaca",
+  mastoides: "mastoides",
+  mastoide: "mastoide",
+  sacro: "sacro",
+  sacra: "sacra",
+  degluticao: "deglutição",
+  esofago: "esôfago",
+  pielografia: "pielografia",
+  iliacas: "ilíacas",
+  clavicula: "clavícula",
+  escapula: "escápula",
+  escafoide: "escafoide",
+  tibia: "tíbia",
+  peronio: "perônio",
+  sesamoide: "sesamoide",
+  transito: "trânsito",
+  urografia: "urografia",
+  ossea: "óssea",
+  osseo: "ósseo",
+  ossos: "ossos",
+  cervicais: "cervicais",
+  aorta: "aorta",
+  veias: "veias",
+  urinario: "urinário",
+  cavum: "cavum",
+  vertebral: "vertebral",
+  coccix: "cóccix",
+  coccigea: "coccígea",
+  coracao: "coração",
+  dilatacao: "dilatação",
+  estenoses: "estenoses",
+  anastomoses: "anastomoses",
+  estomago: "estômago",
+  membros: "membros",
+  maxilar: "maxilar",
+  mandibula: "mandíbula",
+  nariz: "nariz",
+  mediastino: "mediastino",
+  nefrostomia: "nefrostomia",
+  retrope: "retropé",
+  intestinal: "intestinal",
+  excretora: "excretora",
+  miccional: "miccional",
+  pediatrica: "pediátrica",
+  avaliacao: "avaliação",
+  constipacao: "constipação",
+  zigomatica: "zigomática",
+  angulo: "ângulo",
+  ascendente: "ascendente",
+  angiotomografia: "angiotomografia",
+  ultrassografia: "ultrassonografia",
+  incidencias: "incidências",
+  decubito: "decúbito",
+  tunel: "túnel",
+  ouvidos: "ouvidos",
+  perna: "perna",
+  perfil: "perfil",
+}
 
 /**
- * Os nomes na base estão em CAIXA ALTA. Converte para uma forma legível,
- * mantendo acrônimos em maiúscula e conectivos em minúscula.
- * Ex.: "URETROCISTOGRAFIA MICCIONAL (ADULTO)" -> "Uretrocistografia Miccional (Adulto)"
+ * Os nomes na base estão em CAIXA ALTA e sem acentos. Converte para forma
+ * legível: aplica capitalização, mantém acrônimos em maiúscula, conectivos
+ * em minúscula e RESTAURA acentos de termos conhecidos (ACCENTS).
+ * Ex.: "RESSONANCIA DE ABDOMEN" -> "Ressonância de Abdômen"
  */
 export function prettifyExamName(nomeUsual: string): string {
   const words = nomeUsual.trim().toLowerCase().split(/\s+/)
@@ -71,7 +171,7 @@ export function prettifyExamName(nomeUsual: string): string {
 function prettifyWord(word: string, isFirst: boolean): string {
   // Trata parênteses: "(adulto)" -> "(Adulto)"
   const m = word.match(/^(\(*)([^()]*)(\)*)$/)
-  if (!m) return capitalize(word)
+  if (!m) return capitalize(applyAccent(word))
   const [, open, core, close] = m
   const upperCore = core.toUpperCase()
 
@@ -81,9 +181,14 @@ function prettifyWord(word: string, isFirst: boolean): string {
   } else if (!isFirst && open === "" && KEEP_LOWER.has(core)) {
     out = core
   } else {
-    out = capitalize(core)
+    out = capitalize(applyAccent(core))
   }
   return `${open}${out}${close}`
+}
+
+/** Restaura o acento de um termo (minúsculo, sem acento) se estiver no mapa. */
+function applyAccent(core: string): string {
+  return ACCENTS[core] ?? core
 }
 
 function capitalize(s: string): string {

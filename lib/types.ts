@@ -46,6 +46,8 @@ export type PreparosFile = {
 
 export type Source = {
   nome: string
+  /** Código AGHU (sigla). Exposto SOMENTE no perfil profissional. */
+  sigla?: string
 }
 
 export type StoredMessage = ChatMessage & {

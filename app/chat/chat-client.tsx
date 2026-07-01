@@ -31,10 +31,10 @@ const SUGGESTIONS: Record<Profile, string[]> = {
     "Como devo me preparar para a mamografia?",
   ],
   professional: [
-    "Quais exames de raio-X exigem preparo?",
+    "Qual o código AGHU da tomografia de abdômen com contraste?",
     "Qual o fluxo de solicitação e realização de raio-X pelo AGHU?",
     "Qual o preparo para ressonância de abdômen com contraste?",
-    "Qual o preparo da histerossalpingografia?",
+    "Quais exames de raio-X exigem preparo?",
   ],
 }
 
@@ -357,7 +357,7 @@ function MessageBubble({ message }: { message: DisplayMessage }) {
                 variant="secondary"
                 className="bg-mist text-[10px] font-normal text-azure-deep"
               >
-                {src.nome}
+                {src.sigla ? `${src.nome} · ${src.sigla}` : src.nome}
               </Badge>
             ))}
           </div>

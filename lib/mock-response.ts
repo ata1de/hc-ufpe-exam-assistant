@@ -100,14 +100,17 @@ export function generateMockResponse(
   if (matched.length === 0) {
     const reply =
       profile === "professional"
-        ? "Não consegui identificar o exame na sua solicitação. Informe o nome do exame (ex.: tomografia de tórax, ressonância de abdômen, ultrassonografia de abdômen) para que eu retorne o protocolo de preparo correspondente.\n\n" +
+        ? "Não consegui identificar o exame na sua solicitação. Informe o nome do exame (ex.: tomografia de tórax, ressonância de abdômen, ultrassonografia de abdômen) para que eu retorne o protocolo de preparo correspondente. Se você tem apenas o código AGHU, informe-o que retorno o nome do exame.\n\n" +
           `Em caso de dúvida sobre o cadastro, contato da Imagem Geral: ${geral.telefones.imagem_geral}.`
         : "Não consegui identificar o exame na sua pergunta. Você pode me dizer o nome do exame que vai realizar? Por exemplo: tomografia de tórax, ressonância de abdômen, ultrassonografia, mamografia, raio-X, densitometria.\n\n" +
           `Se preferir, ligue para a Imagem Geral do HC-UFPE: ${geral.telefones.imagem_geral}.`
     return { reply, sources: [] }
   }
 
-  const sources: Source[] = matched.map((e) => ({ nome: e.nome }))
+  const isPro = profile === "professional"
+  const sources: Source[] = matched.map((e) =>
+    isPro ? { nome: e.nome, sigla: e.sigla } : { nome: e.nome },
+  )
   const blocks: string[] = []
 
   for (const exame of matched) {
@@ -115,7 +118,7 @@ export function generateMockResponse(
     const phone = phoneForModalidade(exame.modalidade)
 
     if (profile === "professional") {
-      let b = `**${exame.nome}**\n`
+      let b = `**${exame.nome}** (código: ${exame.sigla})\n`
       b += `Modalidade: ${exame.modalidade.replace(/_/g, " ")}\n`
 
       if (preparo.status === "pendente") {

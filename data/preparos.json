@@ -129,6 +129,18 @@
       "orientacoes": "",
       "status": "pendente",
       "fallback": "Cada tipo de cintilografia tem preparo próprio e este ainda não está cadastrado. Por favor, entre em contato com o setor de imagem pelo telefone (81) 2126 3633 para confirmar as orientações específicas antes do dia do exame."
+    },
+    "us_pendente": {
+      "titulo": "Ultrassonografia — preparo a confirmar",
+      "orientacoes": "",
+      "status": "pendente",
+      "fallback": "O preparo específico deste exame de ultrassom ainda não está cadastrado em nossa base. NÃO presuma que o exame dispensa preparo. Por favor, entre em contato com o setor de Ultrassonografia pelo telefone (81) 2126 3884 para confirmar as orientações antes do dia do exame."
+    },
+    "rx_contrastado_pendente": {
+      "titulo": "Raio-X contrastado — preparo a confirmar",
+      "orientacoes": "",
+      "status": "pendente",
+      "fallback": "Este é um exame de raio-X contrastado e o preparo específico ainda não está cadastrado em nossa base. Exames contrastados normalmente exigem preparo (jejum, medicações). NÃO presuma que o exame dispensa preparo. Por favor, confirme com o setor de Raio-X contrastado pelo telefone (81) 2126 3872 antes do dia do exame."
     }
   }
 }
