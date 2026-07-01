@@ -72,23 +72,30 @@ export function useChatSessions(): UseChatSessions {
     (messages: StoredMessage[], profile: Profile) => {
       if (messages.length === 0) return
       const ts = Date.now()
-      const currentId = activeIdRef.current
+
+      // Decide id e efeitos FORA do updater — o updater do setState deve ser
+      // puro (StrictMode o invoca duas vezes em dev). Gerar id/setActive dentro
+      // dele criava sessões duplicadas.
+      let currentId = activeIdRef.current
+      const isNew = !currentId
+      if (isNew) {
+        currentId = newId()
+        setActive(currentId)
+      }
+      const id = currentId!
 
       setSessions((prev) => {
-        const existing = currentId
-          ? prev.find((s) => s.id === currentId)
-          : null
+        const existing = prev.find((s) => s.id === id)
 
         if (existing) {
           const next = prev.map((s) =>
-            s.id === existing.id ? { ...s, messages, updatedAt: ts } : s,
+            s.id === id ? { ...s, messages, updatedAt: ts } : s,
           )
           saveSessions(next)
           return next
         }
 
-        // Primeiro turno de uma conversa nova → cria e ativa a sessão.
-        const id = newId()
+        // Primeiro turno de uma conversa nova → cria a sessão.
         const firstUser = messages.find((m) => m.role === "user")
         const session: ChatSession = {
           id,
@@ -98,7 +105,6 @@ export function useChatSessions(): UseChatSessions {
           createdAt: ts,
           updatedAt: ts,
         }
-        setActive(id)
         const next = [session, ...prev]
         saveSessions(next)
         return next
