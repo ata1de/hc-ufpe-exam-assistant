@@ -1,4 +1,5 @@
 import { normalize } from "./search"
+import { stemQuery } from "./stem"
 import { modalidadeLabel, prettifyExamName } from "./exam-options"
 import type { Exame, PreparosFile, Profile } from "./types"
 
@@ -33,8 +34,10 @@ export function classifyPreparo(exame: Exame, preparos: PreparosFile): PreparoNe
 
 // ---- Detecção de intenção -------------------------------------------------
 
+// A query chega STEMMIZADA (ver parseFilter/wantsAggregate*): "quantos"→"quanto",
+// "quantas"→"quanta". Usamos o radical "quant" para cobrir todas as flexões.
 const COUNT_REGEX =
-  /\bquantos\b|\bquantas\b|\bquantidade\b|\bnumero\b|\bn de\b|\btotal de\b|\bquanto\b/
+  /\bquant|\bnumero\b|\bn de\b|\btotal de\b/
 const LIST_REGEX =
   /\bliste\b|\blistar\b|\blista\b|\bmostre\b|\bmostrar\b|\bquais\b|\brelacione\b|\brelacao de\b|\bexemplos de\b|\balguns\b|\bexiba\b/
 
@@ -84,7 +87,9 @@ export type AggregateFilter = {
 
 /** Extrai filtros (modalidade + necessidade de preparo) da pergunta. */
 export function parseFilter(query: string): AggregateFilter {
-  const q = normalize(query)
+  // Stemiza para que plurais ("ressonâncias", "tomografias") casem os regex,
+  // que são escritos no singular. Ver lib/stem.ts.
+  const q = stemQuery(normalize(query))
   return { modalidade: modalidadeFilter(q), need: needFilter(q) }
 }
 
@@ -94,7 +99,7 @@ export function parseFilter(query: string): AggregateFilter {
  * genérica a exames/base/todos, ou um filtro por modalidade/preparo).
  */
 export function wantsAggregateCount(query: string): boolean {
-  const q = normalize(query)
+  const q = stemQuery(normalize(query))
   if (!COUNT_REGEX.test(q)) return false
   const f = parseFilter(query)
   return (
@@ -111,7 +116,7 @@ export function wantsAggregateCount(query: string): boolean {
  * (Difere de `wantsListaRaiox` no route, que é específico de raio-X contrastado.)
  */
 export function wantsAggregateList(query: string): boolean {
-  const q = normalize(query)
+  const q = stemQuery(normalize(query))
   if (!LIST_REGEX.test(q)) return false
   const f = parseFilter(query)
   return (

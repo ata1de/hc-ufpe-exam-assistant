@@ -1,6 +1,7 @@
 import examesData from "@/data/exames.json"
 import preparosData from "@/data/preparos.json"
 import { searchExames, normalize } from "@/lib/search"
+import { stemQuery } from "@/lib/stem"
 import type { ChatMessage, Exame, PreparosFile, Profile, Source } from "@/lib/types"
 
 const exames = examesData as Exame[]
@@ -29,13 +30,13 @@ const fluxoRxRegex =
   /\bfluxo\b|\baghu\b|solicit|maqueir|tecnic|passo a passo|como pedir|como solicitar|pedir exame|realizacao do exame|in loco/
 
 function wantsFluxoRaiox(query: string): boolean {
-  const q = normalize(query)
+  const q = stemQuery(normalize(query))
   const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia/.test(q)
   return (mentionsRaiox && fluxoRxRegex.test(q)) || /\baghu\b|maqueir/.test(q)
 }
 
 function wantsListaRaiox(query: string): boolean {
-  const q = normalize(query)
+  const q = stemQuery(normalize(query))
   const mentionsRaiox = /\braio\s?x\b|\brx\b|radiologia|contrastad/.test(q)
   const isListing =
     /\bquais\b|\bque\b|lista|listar|todos|quantos|relacao|exigem|precisam|necessitam|exige|precisa de preparo|tem preparo|com preparo/.test(
